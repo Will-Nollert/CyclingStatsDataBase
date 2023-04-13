@@ -5,8 +5,8 @@ const RacerFinisher = require("./racerFinisherObject");
 const seedData = async () => {
   try {
     // First, clear out any existing data
-    await Race.deleteMany({});
-    await RacerFinisher.deleteMany({});
+    await Race.deleteMany({isSeedData: true});
+    await RacerFinisher.deleteMany({isSeedData: true});
 
     // Add some seed data for races and racers
     const races = await Race.create([
@@ -29,6 +29,7 @@ const seedData = async () => {
         startlist_quality_score: '811',
         won_how: 'Sprint à deux',
         avg_temperature: '',
+        isSeedData: true,
       },
       {
         name: "Giro d'Italia",
@@ -49,6 +50,7 @@ const seedData = async () => {
         startlist_quality_score: "942",
         won_how: "Solo breakaway",
         avg_temperature: "15°C",
+        isSeedData: true,
       },
     ]);
 
@@ -58,18 +60,21 @@ const seedData = async () => {
         race: races[0]._id,
         finishPlace: 1,
         teamName: "Bora-Hansgrohe",
+        isSeedData: true,
       },
       {
         name: "Peter Sagan",
         race: races[0]._id,
         finishPlace: 2,
         teamName: "UAE-Team Emirates",
+        isSeedData: true,
       },
       {
         name: "Egan Bernal",
         race: races[1]._id,
         finishPlace: 3,
         teamName: "Movistar Team",
+        isSeedData: true,
       },
     ]);
 
