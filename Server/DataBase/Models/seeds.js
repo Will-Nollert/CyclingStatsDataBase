@@ -13,12 +13,12 @@ const seedData = async () => {
       {
         name: "Boston Marathon",
         location: "Boston, MA",
-        date: "04/18/2022",
+        date: new Date(),
       },
       {
         name: "New York City Marathon",
         location: "New York, NY",
-        date: "11/06/2022",
+        date: new Date(),
       },
     ]);
 

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const DB_URI = process.env.MONGODB_URI;
 const seedData = require("./Models/seeds");

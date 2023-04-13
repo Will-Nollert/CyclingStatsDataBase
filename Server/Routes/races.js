@@ -28,7 +28,10 @@ router.post('/races', async (req, res) => {
 // Get a specific race by name and date
 router.get('/races/:name/:date', async (req, res) => {
   try {
-    const race = await Race.findOne({ name: req.params.name, date: req.params.date });
+    const race = await Race.findOne({ name: req.params.name, date: req.params.date }).populate({
+      path: 'raceFinishers',
+      select: 'name finishPlace -_id'
+    });
     if (!race) {
       return res.status(404).send('Race not found');
     }
