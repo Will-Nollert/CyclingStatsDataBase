@@ -12,7 +12,6 @@ require("dotenv").config();
 async function startServer() {
   try {
     connectDB();
-    console.log("inside startServer");
     app.listen(3000, () => {
       console.log(`Server started on port ${process.env.PORT || 3000}`);
     });
