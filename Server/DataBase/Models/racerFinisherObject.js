@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const racerFinisherSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  position: { type: String, required: true },
+  riderName: { type: String, required: true },
   race: { type: mongoose.Schema.Types.ObjectId, ref: "Race", required: true },
-  finishPlace: { type: Number, required: true },
   teamName: { type: String, required: true },
 });
 

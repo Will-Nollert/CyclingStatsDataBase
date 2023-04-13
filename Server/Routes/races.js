@@ -1,15 +1,19 @@
+var bodyParser = require("body-parser");
 const express = require("express");
 const router = express.Router();
 const Race = require("../DataBase/Models/raceObject");
 const RacerFinisher = require("../DataBase/Models/racerFinisherObject");
 
+// create application/json parser
+var jsonParser = bodyParser.json();
+
 //Get All races
 router.get("/api/races", async (req, res) => {
   try {
     const races = await Race.find().populate({
-      path: "raceFinishers",
-      select: "name finishPlace -_id",
-    });
+      path: "finishers",
+      select: "position riderName -_id",
+    });    
     res.json(races);
   } catch (err) {
     console.error(err);
@@ -28,6 +32,37 @@ router.post("/races", async (req, res) => {
   }
 });
 
+//post to races with finishers
+router.post("/races-with-finishers", jsonParser, async (req, res) => {
+  console.log(req.body);
+  try {
+    const { race, finishers } = req.body;
+
+    // Save the race
+    const newRace = new Race(race);
+    const savedRace = await newRace.save();
+
+    // Save the finishers
+    const raceFinishers = [];
+    for (let i = 0; i < finishers.length; i++) {
+      const finisher = new RacerFinisher({
+        ...finishers[i],
+        race: savedRace._id,
+      });
+      const savedFinisher = await finisher.save();
+      raceFinishers.push(savedFinisher);
+    }
+
+    // Update the race with the finishers
+    savedRace.finishers = raceFinishers;
+    await savedRace.save();
+
+    res.json(savedRace);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 // Get a specific race by name and date
 router.get("/races/:name/:date", async (req, res) => {
   try {
@@ -35,7 +70,7 @@ router.get("/races/:name/:date", async (req, res) => {
       name: req.params.name,
       date: req.params.date,
     }).populate({
-      path: "raceFinishers",
+      path: "finishers",
       select: "name finishPlace -_id",
     });
     if (!race) {

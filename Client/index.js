@@ -1,27 +1,42 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+let raceName = "paris-roubaix";
+let raceYear = "2018";
+const raceUrl =
+  "https://www.procyclingstats.com/race/" +
+  raceName +
+  "/" +
+  raceYear +
+  "/results";
+
 axios
-  .get("https://www.procyclingstats.com/race/paris-roubaix/2018/results")
+  .get(raceUrl)
   .then((response) => {
     const $ = cheerio.load(response.data);
+    //Get the Race MetaData
     const infoList = $("ul.infolist");
-    const infoListData = {};
+    let race = {};
     infoList.find("li").each((index, element) => {
       const key = $(element)
         .find("div")
         .eq(0)
         .text()
         .trim()
-        .replace(/\s+/g, "_")
+        .replace(/[\s.:]+/g, "_")
         .toLowerCase();
-      const value = $(element).find("div").eq(1).text().trim().replace(/[\s.]+/g, "_");
-      infoListData[key] = value;
+      const value = $(element)
+        .find("div")
+        .eq(1)
+        .text()
+        .trim()
+        .replace(/[\s.]+/g, "_");
+      race[key] = value;
     });
-    console.log(infoListData);
-
+    //Add a key value pair to the race object of raceName
+    race = { name: raceName, ...race };
+    //Get the finishers table data
     const table = $("table.results > tbody");
-    const tableData = [];
-
+    const finishers = [];
     table.find("tr").each((index, element) => {
       const position = $(element).find("td").eq(0).text().trim();
       const riderName = $(element)
@@ -38,10 +53,26 @@ axios
         .text()
         .trim();
 
-      tableData.push({ position, riderName, teamName });
+      finishers.push({ position, riderName, teamName });
     });
+    console.log(JSON.stringify({ race, finishers }));
 
-    console.log(tableData);
+    // Make the POST request to your backend API endpoint
+     fetch("localhost:3000//races-with-finishers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({race, finishers }),
+    }) 
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      }); 
+  
   })
   .catch((error) => {
     console.log(error);

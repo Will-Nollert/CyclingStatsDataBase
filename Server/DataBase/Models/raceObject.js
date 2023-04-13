@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 
 const raceSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  location: { type: String, required: true },
-  date: { type: String, required: true },
+  date_: { type: String, required: true },
   start_time: { type: String },
   avg_speed_winner: { type: String },
   race_category: { type: String },
@@ -19,7 +18,7 @@ const raceSchema = new mongoose.Schema({
   startlist_quality_score: { type: String },
   won_how: { type: String },
   avg_temperature: { type: String },
-  raceFinishers: [
+  finishers: [
     { type: mongoose.Schema.Types.ObjectId, ref: "RacerFinisher" },
   ],
 });
