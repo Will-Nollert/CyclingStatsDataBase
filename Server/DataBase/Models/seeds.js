@@ -52,7 +52,7 @@ const seedData = async () => {
     console.log("Seed data created successfully!");
   } catch (error) {
     console.log("Error creating seed data:", error.message);
-  } 
+  }
 };
 
 module.exports = seedData;
