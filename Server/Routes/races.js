@@ -1,10 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const Race = require("../DataBase/Models/raceObject")
+const RacerFinisher = require("../DataBase/Models/racerFinisherObject")
 
 //Get All races
-router.get("/api/races", (req, res) => {
-  // Your code to handle the GET request
-  res.send("Hello, World!");
+router.get("/api/races", async (req, res) => {
+  try {
+    const races = await Race.find();
+    res.json(races);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 //Post to races

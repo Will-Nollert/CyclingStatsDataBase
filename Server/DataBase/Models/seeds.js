@@ -52,10 +52,7 @@ const seedData = async () => {
     console.log("Seed data created successfully!");
   } catch (error) {
     console.log("Error creating seed data:", error.message);
-  } finally {
-    // Close the connection to the database when done
-    mongoose.connection.close();
-  }
+  } 
 };
 
 module.exports = seedData;

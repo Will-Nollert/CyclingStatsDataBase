@@ -3,16 +3,18 @@ const  DB_URI = process.env.MONGODB_URI;
 const seedData = require('./Models/seeds');
 const connectDB = async () => {
   try {
-    await mongoose.connect(DB_URI, {
+     mongoose.connect(DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      keepAlive: true,
     });
-    console.log('MongoDB connected successfully');
+    if(mongoose.connection.readyState === 2 )console.log('MongoDB connecting');
     await seedData();
     console.log('Seed data loaded successfully');
   } catch (err) {
     console.log('MongoDB connection error: ', err);
   }
+  
 };
 
 module.exports = connectDB;
