@@ -14,7 +14,7 @@ axios
         .trim()
         .replace(/\s+/g, "_")
         .toLowerCase();
-      const value = $(element).find("div").eq(1).text().trim();
+      const value = $(element).find("div").eq(1).text().trim().replace(/[\s.]+/g, "_");
       infoListData[key] = value;
     });
     console.log(infoListData);
