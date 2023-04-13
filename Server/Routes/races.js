@@ -6,7 +6,10 @@ const RacerFinisher = require("../DataBase/Models/racerFinisherObject");
 //Get All races
 router.get("/api/races", async (req, res) => {
   try {
-    const races = await Race.find();
+    const races = await Race.find().populate({
+      path: "raceFinishers",
+      select: "name finishPlace -_id",
+    });
     res.json(races);
   } catch (err) {
     console.error(err);
