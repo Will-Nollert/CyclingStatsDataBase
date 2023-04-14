@@ -55,10 +55,9 @@ axios
 
       finishers.push({ position, riderName, teamName });
     });
-    console.log(JSON.stringify({ race, finishers }));
 
     // Make the POST request to your backend API endpoint
-     fetch("localhost:3000//races-with-finishers", {
+     fetch("http://localhost:3000/races-with-finishers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +66,7 @@ axios
     }) 
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
+        console.log("Added " + raceName + " " + raceYear + " to the database" );
       })
       .catch((error) => {
         console.error("Error:", error);
