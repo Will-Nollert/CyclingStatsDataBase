@@ -1,13 +1,8 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-let raceName = "paris-roubaix";
-let raceYear = "2018";
-const raceUrl =
-  "https://www.procyclingstats.com/race/" +
-  raceName +
-  "/" +
-  raceYear +
-  "/results";
+
+const scrapeRaceResults = (raceName, raceYear) => {
+  const raceUrl = `https://www.procyclingstats.com/race/${raceName}/${raceYear}/results`;
 
 axios
   .get(raceUrl)
@@ -66,13 +61,19 @@ axios
     }) 
       .then((response) => response.json())
       .then((data) => {
-        console.log("Added " + raceName + " " + raceYear + " to the database" );
+        console.log(`Added ${raceName} ${raceYear} to the database`);
+        if (raceYear > 2013) {
+          // Call the function recursively with a lower raceYear
+          scrapeRaceResults(raceName, raceYear - 1);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
-      }); 
-  
+      });
   })
   .catch((error) => {
     console.log(error);
   });
+}
+
+scrapeRaceResults("paris-roubaix", "2023");
