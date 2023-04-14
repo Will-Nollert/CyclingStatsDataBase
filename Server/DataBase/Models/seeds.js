@@ -12,7 +12,7 @@ const seedData = async () => {
     const races = await Race.create([
       {
         name: "Test-Race1",
-        date: "08 April 2018",
+        date_: "08 April 2018",
         start_time_: "11:20",
         avg_speed_winner_: "43.55 km/h",
         race_category_: "ME - Men Elite",
@@ -31,7 +31,7 @@ const seedData = async () => {
       },
       {
         name: "Test-Race2",
-        date: "May 8, 2022",
+        date_: "May 8, 2022",
         start_time_: "10:00",
         avg_speed_winner_: "39.7 km/h",
         race_category_: "ME - Men Elite",

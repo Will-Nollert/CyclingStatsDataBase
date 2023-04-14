@@ -11,7 +11,7 @@ var jsonParser = bodyParser.json();
 router.get("/api/races", async (req, res) => {
   try {
     const races = await Race.find().populate({
-      path: "finishers",
+       path: "finishers",
       select: "position riderName -_id",
     });    
     res.json(races);
@@ -64,14 +64,14 @@ router.post("/races-with-finishers", jsonParser, async (req, res) => {
 });
 
 // Get a specific race by name and date
-router.get("/races/:name/:date", async (req, res) => {
+router.get("/races/:name/:date_", async (req, res) => {
   try {
     const race = await Race.findOne({
       name: req.params.name,
-      date: req.params.date,
+      date_: req.params.date_,
     }).populate({
-      path: "finishers",
-      select: "name finishPlace -_id",
+       path: "finishers",
+      select: "position riderName -_id",
     });
     if (!race) {
       return res.status(404).send("Race not found");
@@ -83,11 +83,11 @@ router.get("/races/:name/:date", async (req, res) => {
 });
 
 // Delete a specific race by name and date
-router.delete("/races/:name/:date", async (req, res) => {
+router.delete("/races/:name/:date_", async (req, res) => {
   try {
     const race = await Race.findOneAndDelete({
       name: req.params.name,
-      date: req.params.date,
+      date_: req.params.date_,
     });
     if (!race) {
       return res.status(404).send("Race not found");
@@ -99,11 +99,11 @@ router.delete("/races/:name/:date", async (req, res) => {
 });
 
 // Get all racerFinishers for a specific race by name and date
-router.get("/races/:name/:date/racerFinishers", async (req, res) => {
+router.get("/races/:name/:date_/racerFinishers", async (req, res) => {
   try {
     const racerFinishers = await RacerFinisher.find({
       raceName: req.params.name,
-      raceDate: req.params.date,
+      raceDate: req.params.date_,
     });
     res.json(racerFinishers);
   } catch (error) {
@@ -112,12 +112,12 @@ router.get("/races/:name/:date/racerFinishers", async (req, res) => {
 });
 
 // Add a racerFinisher for a specific race by name and date
-router.post("/races/:name/:date/racerFinishers", async (req, res) => {
+router.post("/races/:name/:date_/racerFinishers", async (req, res) => {
   try {
     const racerFinisher = new RacerFinisher({
       ...req.body,
       raceName: req.params.name,
-      raceDate: req.params.date,
+      raceDate: req.params.date_,
     });
     const savedRacerFinisher = await racerFinisher.save();
     res.json(savedRacerFinisher);

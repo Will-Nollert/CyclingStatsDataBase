@@ -50,19 +50,23 @@ axios
 
       finishers.push({ position, riderName, teamName });
     });
-
     // Make the POST request to your backend API endpoint
-     fetch("http://localhost:3000/races-with-finishers", {
+    fetch("http://localhost:3000/races-with-finishers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({race, finishers }),
-    }) 
-      .then((response) => response.json())
+      body: JSON.stringify({ race, finishers }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(`Added ${raceName} ${raceYear} to the database`);
-        if (raceYear > 2013) {
+        if (raceYear > 1950) {
           // Call the function recursively with a lower raceYear
           scrapeRaceResults(raceName, raceYear - 1);
         }
@@ -70,10 +74,12 @@ axios
       .catch((error) => {
         console.error("Error:", error);
       });
+    
   })
   .catch((error) => {
     console.log(error);
   });
-}
+};
 
+// Call the function with the initial raceName and raceYear
 scrapeRaceResults("paris-roubaix", "2023");
