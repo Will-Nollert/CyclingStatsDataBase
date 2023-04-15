@@ -21,7 +21,7 @@ async function startServer() {
   }
 }
 startServer();
-updateBicycleRacers() 
+//updateBicycleRacers() 
 
 /*********************
  * EXPRESS & ROUTERS *

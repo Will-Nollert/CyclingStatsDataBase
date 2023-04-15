@@ -3,11 +3,10 @@ const express = require("express");
 const router = express.Router();
 const Race = require("../DataBase/Models/raceObject");
 const RacerFinisher = require("../DataBase/Models/racerFinisherObject");
+const BicycleRacer = require("../DataBase/Models/bicycleRacer");
 
 // create application/json parser
 var jsonParser = bodyParser.json();
-
-
 
 //Post a race object
 router.post("/races", async (req, res) => {
@@ -71,13 +70,54 @@ router.post("/races/:name/:date_/racerFinishers", async (req, res) => {
 router.get("/api/races", async (req, res) => {
   try {
     const races = await Race.find().populate({
-       path: "finishers",
+      path: "finishers",
       select: "position riderName -_id",
-    });    
+    });
     res.json(races);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
+  }
+});
+
+//Get ALL BicycleRacers with RaceID and Position
+router.get("/bicycleRacers", async (req, res) => {
+  try {
+    const bicycleRacers = await BicycleRacer.find();
+    res.json(bicycleRacers);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//Get A specific BicycleRacer with race history
+router.get("/bicycleRacers/:riderName/history", async (req, res) => {
+  try {
+    const bicycleRacer = await BicycleRacer.findOne({
+      riderName: req.params.riderName,
+    });
+    if (!bicycleRacer) {
+      return res.status(404).send("Bicycle racer not found");
+    }
+
+    const races = await Race.find({
+      _id: { $in: bicycleRacer.races.map((race) => race.race) },
+    });
+
+    const raceHistory = races.map((race) => {
+      const position = bicycleRacer.races.find((r) =>
+        r.race.equals(race._id)
+      ).position;
+      return {
+        raceName: race.name,
+        date: race.date_,
+        position: position,
+      };
+    });
+
+    res.json(raceHistory);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 });
 
@@ -88,7 +128,7 @@ router.get("/raceByName/:name/:date_", async (req, res) => {
       name: req.params.name,
       date_: req.params.date_,
     }).populate({
-       path: "finishers",
+      path: "finishers",
       select: "position riderName -_id",
     });
     if (!race) {
@@ -116,26 +156,6 @@ router.get("/races/:name", async (req, res) => {
   }
 });
 
-// Get ALL races based on startlist quality score
-router.get("/races/rank-by-startlist-quality", async (req, res) => {
-  try {
-    const races = await Race.find().sort({ startlist_quality_score_: -1 });
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-// Rank races of a specific name based on startlist quality score
-router.get("/races/rank-by-startlist-quality/:name", async (req, res) => {
-  try {
-    const races = await Race.find({ name: req.params.name }).sort({ startlist_quality_score_: -1 });
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
 //Get all finishers for a specific race by Race_ID
 router.get("/raceID/:id/finishers", async (req, res) => {
   try {
@@ -149,30 +169,7 @@ router.get("/raceID/:id/finishers", async (req, res) => {
   }
 });
 
-// Get all racerFinishers for a specific race by name and date
-router.get("/races/:name/:date_/racerFinishers", async (req, res) => {
-  try {
-    const racerFinishers = await RacerFinisher.find({
-      raceName: req.params.name,
-      raceDate: req.params.date_,
-    });
-    res.json(racerFinishers);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-//Get all instances of a RACE ranked by vert meters
-router.get("/races/rank-by-vert-meters/:name", async (req, res) => {
-  try {
-    const races = await Race.find({ name: req.params.name }).sort({ vert_meters_: -1 });
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-//Get all instance of a race ranked by finisher speed 
+//Rank all instance of a race  by finisher speed
 router.get("/races/:name/ranked-by-speed", async (req, res) => {
   try {
     const races = await Race.find({ name: req.params.name })
@@ -182,6 +179,67 @@ router.get("/races/:name/ranked-by-speed", async (req, res) => {
       return res.status(404).send("No races found for this name");
     }
     res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Rank ALL races based on startlist quality score
+router.get("/races/rank-by-startlist-quality", async (req, res) => {
+  try {
+    const races = await Race.find().sort({ startlist_quality_score_: -1 });
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//Rank all instances of a RACE  by vert meters
+router.get("/races/rank-by-vert-meters/:name", async (req, res) => {
+  try {
+    const races = await Race.find({ name: req.params.name }).sort({
+      vert_meters_: -1,
+    });
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Rank races of a specific name based on startlist quality score
+router.get("/races/rank-by-startlist-quality/:name", async (req, res) => {
+  try {
+    const races = await Race.find({ name: req.params.name }).sort({
+      startlist_quality_score_: -1,
+    });
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//Rank ONE riders races by finish position
+router.get("/bicycleRacers/:riderName/rankedHistory", async (req, res) => {
+  try {
+    const bicycleRacer = await BicycleRacer.findOne({ riderName: req.params.riderName });
+    if (!bicycleRacer) {
+      return res.status(404).send("Bicycle racer not found");
+    }
+    
+    const races = await Race.find({ _id: { $in: bicycleRacer.races.map((race) => race.race) } });
+    
+    const raceHistory = races.map((race) => {
+      const position = bicycleRacer.races.find((r) => r.race.equals(race._id)).position;
+      return {
+        raceName: race.name,
+        raceDate: race.date,
+        position: position
+      };
+    });
+    
+    const rankedHistory = raceHistory.sort((a, b) => parseInt(a.position) - parseInt(b.position));
+    
+    res.json(rankedHistory);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -203,7 +261,5 @@ router.delete("/races/:name/:date_", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-
 
 module.exports = router;
