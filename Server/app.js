@@ -26,10 +26,12 @@ startServer();
 /*********************
  * EXPRESS & ROUTERS *
  *********************/
-// Define the route for "/api/races"
 const racesRouter = require("./Routes/races");
-app.use("/", racesRouter);
+app.use("/api/races", racesRouter);
 
+
+const bicycleRacersRouter = require("./Routes/bicycleRacers");
+app.use("/api/bicycle-racers", bicycleRacersRouter);
 
 
 // Function to update the BicycleRacer model with the races and positions for each racer
