@@ -7,21 +7,9 @@ const RacerFinisher = require("../DataBase/Models/racerFinisherObject");
 // create application/json parser
 var jsonParser = bodyParser.json();
 
-//Get All races
-router.get("/api/races", async (req, res) => {
-  try {
-    const races = await Race.find().populate({
-       path: "finishers",
-      select: "position riderName -_id",
-    });    
-    res.json(races);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-});
 
-//Post to races
+
+//Post a race object
 router.post("/races", async (req, res) => {
   try {
     const race = new Race(req.body);
@@ -32,7 +20,7 @@ router.post("/races", async (req, res) => {
   }
 });
 
-//post to races with finishers
+//Post a race object with race finishers array
 router.post("/races-with-finishers", jsonParser, async (req, res) => {
   console.log(req.body);
   try {
@@ -56,10 +44,40 @@ router.post("/races-with-finishers", jsonParser, async (req, res) => {
     // Update the race with the finishers
     savedRace.finishers = raceFinishers;
     await savedRace.save();
+    savedRace.finishers = raceFinishers;
 
     res.json(savedRace);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+// Post a racerFinisher to array for a specific race by name and date
+router.post("/races/:name/:date_/racerFinishers", async (req, res) => {
+  try {
+    const racerFinisher = new RacerFinisher({
+      ...req.body,
+      raceName: req.params.name,
+      raceDate: req.params.date_,
+    });
+    const savedRacerFinisher = await racerFinisher.save();
+    res.json(savedRacerFinisher);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//Get All races
+router.get("/api/races", async (req, res) => {
+  try {
+    const races = await Race.find().populate({
+       path: "finishers",
+      select: "position riderName -_id",
+    });    
+    res.json(races);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
@@ -82,17 +100,50 @@ router.get("/races/:name/:date_", async (req, res) => {
   }
 });
 
-// Delete a specific race by name and date
-router.delete("/races/:name/:date_", async (req, res) => {
+// Get ALL races with a specified name
+router.get("/races/:name", async (req, res) => {
   try {
-    const race = await Race.findOneAndDelete({
-      name: req.params.name,
-      date_: req.params.date_,
+    const races = await Race.find({ name: req.params.name }).populate({
+      path: "finishers",
+      select: "position riderName -_id",
     });
+    if (races.length === 0) {
+      return res.status(404).send("No races found");
+    }
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Get ALL races based on startlist quality score
+router.get("/races/rank-by-startlist-quality", async (req, res) => {
+  try {
+    const races = await Race.find().sort({ startlist_quality_score_: -1 });
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Rank races of a specific name based on startlist quality score
+router.get("/races/rank-by-startlist-quality/:name", async (req, res) => {
+  try {
+    const races = await Race.find({ name: req.params.name }).sort({ startlist_quality_score_: -1 });
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+//Get all finishers for a specific race by Race_ID
+router.get("/races/:id/finishers", async (req, res) => {
+  try {
+    const race = await raceObject.findById(req.params.id).populate("finishers");
     if (!race) {
       return res.status(404).send("Race not found");
     }
-    res.send("Race deleted");
+    res.json(race.finishers);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -111,19 +162,80 @@ router.get("/races/:name/:date_/racerFinishers", async (req, res) => {
   }
 });
 
-// Add a racerFinisher for a specific race by name and date
-router.post("/races/:name/:date_/racerFinishers", async (req, res) => {
+//Get all instances of a RACE ranked by vert meters
+router.get("/races/rank-by-vert-meters/:name", async (req, res) => {
   try {
-    const racerFinisher = new RacerFinisher({
-      ...req.body,
-      raceName: req.params.name,
-      raceDate: req.params.date_,
-    });
-    const savedRacerFinisher = await racerFinisher.save();
-    res.json(savedRacerFinisher);
+    const races = await Race.find({ name: req.params.name }).sort({ vert_meters_: -1 });
+    res.json(races);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
+//Get all instance of a race ranked by finisher speed 
+router.get("/races/:name/ranked-by-speed", async (req, res) => {
+  try {
+    const races = await Race.find({ name: req.params.name })
+      .sort({ avg_speed_winner_: -1 })
+      .select("-finishers");
+    if (!races || races.length === 0) {
+      return res.status(404).send("No races found for this name");
+    }
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.get("/history/:racerName", async (req, res) => {
+  try {
+    // Find the racer in the database
+    const racer = await RacerFinisher.findOne({ riderName: req.params.racerName });
+    
+    // If the racer doesn't exist, return a 404 error
+    if (!racer) {
+      return res.status(404).send("Racer not found");
+    }
+    
+    // Retrieve all races that the racer has participated in
+    const races = await Race.find({ "finishers.riderName": racer.riderName });
+    console.log(races)
+    
+    // Create an array of objects containing each race and the racer's position in that race
+    const raceHistory = races.map((race) => {
+      const finisher = race.finishers.find((finisher) => finisher.riderName === racer.riderName);
+      return {
+        raceName: race.name,
+        position: finisher.position
+      };
+    });
+
+    // Return the race history for the requested racer
+    res.json(raceHistory);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+
+
+// Delete a specific race by name and date
+router.delete("/races/:name/:date_", async (req, res) => {
+  try {
+    const race = await Race.findOneAndDelete({
+      name: req.params.name,
+      date_: req.params.date_,
+    });
+    if (!race) {
+      return res.status(404).send("Race not found");
+    }
+    res.send("Race deleted");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
 
 module.exports = router;

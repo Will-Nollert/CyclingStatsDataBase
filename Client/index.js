@@ -60,7 +60,7 @@ axios
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error(`Network response was not ok: ${response.statusText}`);
         }
         return response.json();
       })
@@ -72,7 +72,7 @@ axios
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.log(`Error: ${error.message}`);
       });
     
   })
@@ -82,4 +82,4 @@ axios
 };
 
 // Call the function with the initial raceName and raceYear
-scrapeRaceResults("paris-roubaix", "2023");
+scrapeRaceResults("e3-harelbeke", "2023");

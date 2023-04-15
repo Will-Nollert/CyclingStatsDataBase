@@ -14,8 +14,8 @@ const connectDB = async () => {
       keepAlive: true,
     });
     if (mongoose.connection.readyState === 2) console.log("MongoDB connecting");
-    await seedData();
-    console.log("Seed data loaded successfully");
+    //await seedData();
+    //console.log("Seed data loaded successfully");
   } catch (err) {
     console.log("MongoDB connection error: ", err);
   }
