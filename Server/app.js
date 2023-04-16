@@ -1,5 +1,5 @@
 /*************************
- * CONSTANTS AND IMPORTS *
+ * CONSTANTS AND IMPORTS  *
  *************************/
 const express = require("express");
 const cors = require("cors");
