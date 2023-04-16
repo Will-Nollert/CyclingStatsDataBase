@@ -11,7 +11,7 @@
 
     <form>
       <h2>Get Every Race by Name</h2>
-      <hr>
+      <hr />
       <button
         type="button"
         class="example-button"
@@ -19,7 +19,7 @@
       >
         Show Example
       </button>
-      <br>
+      <br />
       <pre class="hidden" id="example2">
 fetch('/api/races/{name}')
 
@@ -60,14 +60,14 @@ Example Response:  {
         name="raceName"
         placeholder="paris-roubaix"
       />
-      <br>
+      <br />
       <button type="button" onclick="getRacesByName()">Get Races</button>
       <div id="racesList"></div>
     </form>
 
     <form>
       <h2>Get Race History for Bicycle Racer</h2>
-      <hr>
+      <hr />
       <button
         type="button"
         class="example-button"
@@ -91,7 +91,7 @@ Example Response: [
 }, etc...]
 </pre
       >
-      <br>
+      <br />
       <div class="input-message">
         Rider's name must be "last name first name"
       </div>
@@ -103,7 +103,7 @@ Example Response: [
         size="30"
         placeholder="Philipsen Jasper || Van Aert Wout"
       />
-      <br>
+      <br />
       <button type="button" onclick="getBicycleRacerRaceHistory()">
         Get Race History
       </button>
@@ -112,7 +112,7 @@ Example Response: [
 
     <form>
       <h2>Get Ranked Race History for Bicycle Racer</h2>
-      <hr>
+      <hr />
       <button
         type="button"
         class="example-button"
@@ -135,19 +135,17 @@ Example Response:  {
 }, etc...]
 </pre
       >
-      <br>
-      <div class="input-message">
-        Rider's name must be "last name first name"
-      </div>
+      <br />
+      <div class="input-message">Rider's name must be "middle last first "</div>
       <label for="riderNameRankedHistory">Rider Name:</label>
       <input
         type="text"
         id="riderNameRankedHistory"
         name="riderNameRankedHistory"
-        placeholder=" KRAGH ANDERSEN Søren"
+        placeholder="Kragh Anderson Søren"
         size="23"
       />
-      <br>
+      <br />
       <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
         Get Ranked Race History
       </button>
@@ -155,7 +153,7 @@ Example Response:  {
     </form>
 
     <form>
-      <hr>
+      <hr />
       <h2>Get Race by Name and Date</h2>
       <button
         type="button"
@@ -198,7 +196,7 @@ Example Response: {
     }
 </pre
       >
-      <br>
+      <br />
       <label for="raceName">Name:</label>
       <input
         type="text"
@@ -213,7 +211,7 @@ Example Response: {
         name="raceDate"
         placeholder="09_April_2023"
       />
-      <br>
+      <br />
       <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
       <div id="racesContainer"></div>
     </form>
@@ -223,15 +221,31 @@ Example Response: {
       <div class="input-message">
         Warning: This will return a large amount of data
       </div>
-      <hr>
+      <hr />
       <button
         type="button"
+        class="example-button"
         onclick="toggleExample(document.getElementById('example1'))"
       >
         Show Example
       </button>
-      <pre class="hidden" id="example1">fetch('/api/races')</pre>
- 
+      <pre class="hidden" id="example1">
+fetch('/api/races')
+
+Exaple Response: [
+
+{ paris-roubaix
+  Date: 17_April_2022
+  Winner Avg Speed: 45_792_km/h},
+  
+{ paris-roubaix
+ Date: 03_October_2021
+  Winner Avg Speed: 42_719_km/h},
+  etc...
+  
+  ]
+      </pre>
+
       <button type="button" onclick="getAllBicycleRaces()">
         Get All Bicycle Races
       </button>

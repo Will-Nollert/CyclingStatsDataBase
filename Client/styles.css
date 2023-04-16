@@ -4,6 +4,7 @@ font-family: 'Courier New', Courier, monospace;
 
 body {
     margin: 20px;
+    background-color: #f2f2f2; 
   }
   
   form {
@@ -133,3 +134,31 @@ body {
     margin-top: 5px;
   }
   
+  .example-button {
+    font-size: 16px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+    
+    .example-button:hover {
+    background-color: #e0e0e0;
+    }
+
+    .race-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+    }
+    
+    .race-card:hover {
+      box-shadow: 4px 4px 10px #ccc;
+    }
+    
