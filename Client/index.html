@@ -3,51 +3,239 @@
   <head>
     <title>My API Playground</title>
     <script src="scripts.js"></script>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
-  <link rel="stylesheet" href="styles.css">
   <body>
     <h1>Welcome to My API Playground</h1>
 
     <form>
-      <h2>Get All Bicycle Races</h2>
-      <button type="button" onclick="getAllBicycleRacers()">Get All Bicycle Racers</button>
-      <div id="allBicycleRacers"></div>
-    </form>
-
-    <form>
       <h2>Get Every Race by Name</h2>
+      <hr>
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example2'))"
+      >
+        Show Example
+      </button>
+      <br>
+      <pre class="hidden" id="example2">
+fetch('/api/races/{name}')
+
+Example Response:  {
+          "_id": "643973fbfdb78b8dbe432fe2",
+          "name": "paris-roubaix",
+          "date_": "09_April_2023",
+          "start_time_": "11:25",
+          "avg_speed_winner_": "46_841_km/h",
+          "race_category_": "ME_-_Men_Elite",
+          "distance_": "256_6_km",
+          "points_scale_": "1_WT_A",
+          "uci_scale_": "UCI_WR_Monument",
+          "parcours_type_": "",
+          "profilescore_": "4",
+          "vert_meters_": "1380",
+          "departure_": "Compiègne",
+          "arrival_": "Roubaix",
+          "race_ranking_": "20",
+          "startlist_quality_score_": "775",
+          "won_how_": "15_1_km_solo",
+          "avg_temperature_": "16_°C",
+          "finishers": [
+              {
+                  "position": "1",
+                  "riderName": "VAN DER POEL Mathieu"
+              },
+              {
+                  "position": "2",
+                  "riderName": "PHILIPSEN Jasper"
+              }, etc...]
+            }
+      </pre>
       <label for="racesList">Race Name:</label>
-      <input type="text" id="raceName" name="raceName">
-      <button type="button" onclick="getRacesByName()">Get Bicycle Racer</button>
+      <input
+        type="text"
+        id="raceName"
+        name="raceName"
+        placeholder="paris-roubaix"
+      />
+      <br>
+      <button type="button" onclick="getRacesByName()">Get Races</button>
       <div id="racesList"></div>
     </form>
 
     <form>
       <h2>Get Race History for Bicycle Racer</h2>
+      <hr>
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example3'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example3">
+fetch('/api/bicycle-racers/{name}/history')
+
+Example Response: [
+{
+    "raceName": "paris-roubaix",
+    "date": "09_April_2023",
+    "position": "1"
+},
+{
+    "raceName": "paris-roubaix",
+    "date": "17_April_2022",
+    "position": "9"
+}, etc...]
+</pre
+      >
+      <br>
+      <div class="input-message">
+        Rider's name must be "last name first name"
+      </div>
       <label for="riderNameHistory">Rider Name:</label>
-      <input type="text" id="riderNameHistory" name="riderNameHistory">
-      <button type="button" onclick="getBicycleRacerRaceHistory()">Get Race History</button>
+      <input
+        type="text"
+        id="riderNameHistory"
+        name="riderNameHistory"
+        size="30"
+        placeholder="Philipsen Jasper || Van Aert Wout"
+      />
+      <br>
+      <button type="button" onclick="getBicycleRacerRaceHistory()">
+        Get Race History
+      </button>
       <div id="bicycleRacerRaceHistory"></div>
     </form>
 
     <form>
       <h2>Get Ranked Race History for Bicycle Racer</h2>
+      <hr>
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example4'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example4">
+fetch('/api/bicycle-racers/{name}/rankedHistory')
+
+Example Response:  {
+  "raceName": "paris-roubaix",
+  "raceDate": "09_April_2023",
+  "position": "1"
+},
+{
+  "raceName": "amstel-gold-race",
+  "raceDate": "21_April_2019",
+  "position": "1"
+}, etc...]
+</pre
+      >
+      <br>
+      <div class="input-message">
+        Rider's name must be "last name first name"
+      </div>
       <label for="riderNameRankedHistory">Rider Name:</label>
-      <input type="text" id="riderNameRankedHistory" name="riderNameRankedHistory">
-      <button type="button" onclick="getRankedBicycleRacerRaceHistory()">Get Ranked Race History</button>
+      <input
+        type="text"
+        id="riderNameRankedHistory"
+        name="riderNameRankedHistory"
+        placeholder=" KRAGH ANDERSEN Søren"
+        size="23"
+      />
+      <br>
+      <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
+        Get Ranked Race History
+      </button>
       <div id="rankedBicycleRacerRaceHistory"></div>
     </form>
-    <form>
-        <h2>Get Race by Name and Date</h2>
-        <label for="raceName">Name:</label>
-        <input type="text" id="raceName" name="raceName">
-        <label for="raceDate">Date:</label>
-        <input type="text" id="raceDate" name="raceDate">
-        <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
-        <div id="racesContainer"></div>
-      </form>
-      
-    </body>
-</html>
 
+    <form>
+      <hr>
+      <h2>Get Race by Name and Date</h2>
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example5'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example5">
+fetch('/api/races/{race_name}/{race_date}')
+
+Example Response: {
+  "_id": "643973fbfdb78b8dbe432fe2",
+  "name": "paris-roubaix",
+  "date_": "09_April_2023",
+  "start_time_": "11:25",
+  "avg_speed_winner_": "46_841_km/h",
+  "race_category_": "ME_-_Men_Elite",
+  "distance_": "256_6_km",
+  "points_scale_": "1_WT_A",
+  "uci_scale_": "UCI_WR_Monument",
+  "parcours_type_": "",
+  "profilescore_": "4",
+  "vert_meters_": "1380",
+  "departure_": "Compiègne",
+  "arrival_": "Roubaix",
+  "race_ranking_": "20",
+  "startlist_quality_score_": "775",
+  "won_how_": "15_1_km_solo",
+  "avg_temperature_": "16_°C",
+  "finishers": [
+      {
+          "position": "1",
+          "riderName": "VAN DER POEL Mathieu"
+      },
+      {
+          "position": "2",
+          "riderName": "PHILIPSEN Jasper"
+      }, etc...]
+    }
+</pre
+      >
+      <br>
+      <label for="raceName">Name:</label>
+      <input
+        type="text"
+        id="raceName"
+        name="raceName"
+        placeholder="paris-roubaix"
+      />
+      <label for="raceDate">Date:</label>
+      <input
+        type="text"
+        id="raceDate"
+        name="raceDate"
+        placeholder="09_April_2023"
+      />
+      <br>
+      <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
+      <div id="racesContainer"></div>
+    </form>
+
+    <form>
+      <h2>Get All Bicycle Races</h2>
+      <div class="input-message">
+        Warning: This will return a large amount of data
+      </div>
+      <hr>
+      <button
+        type="button"
+        onclick="toggleExample(document.getElementById('example1'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example1">fetch('/api/races')</pre>
+ 
+      <button type="button" onclick="getAllBicycleRaces()">
+        Get All Bicycle Races
+      </button>
+      <div id="allBicycleRacers"></div>
+    </form>
+  </body>
+</html>

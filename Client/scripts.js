@@ -1,7 +1,7 @@
 const raceRouteURLBase = "http://localhost:3000/api/races";
 const bicycleRacerRouteURLBase = "http://localhost:3000/api/bicycle-racers";
 
-function getAllBicycleRacers() {
+function getAllBicycleRaces() {
   fetch(raceRouteURLBase)
     .then((response) => response.json())
     .then((data) => {
@@ -67,7 +67,8 @@ function getRacesByName() {
 }
 
 function getBicycleRacerRaceHistory() {
-  const riderName = document.getElementById("riderNameHistory").value;
+  let riderName = document.getElementById("riderNameHistory").value;
+  riderName = capitalizeRiderName(riderName);
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/history`)
     .then((response) => response.json())
     .then((data) => {
@@ -92,7 +93,8 @@ function getBicycleRacerRaceHistory() {
     });
 }
 function getRankedBicycleRacerRaceHistory() {
-  const riderName = document.getElementById("riderNameRankedHistory").value;
+  let riderName = document.getElementById("riderNameRankedHistory").value;
+riderName = capitalizeRiderName(riderName);
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/rankedHistory`)
     .then((response) => response.json())
     .then((data) => {
@@ -140,3 +142,26 @@ function getRaceByNameAndDate() {
     .catch((error) => console.log(error));
 }
 
+/*********************
+ * UTILITY FUNCTIONS *
+ *********************/
+function capitalizeRiderName(riderName) {
+  // Split the rider name into an array of words
+  const words = riderName.split(' ');
+
+  // Capitalize each word (except the last one)
+  for (let i = 0; i < words.length - 1; i++) {
+    words[i] = words[i].toUpperCase();
+  }
+
+  // Join the capitalized words back together with spaces
+  const capitalizedWords = words.join(' ');
+
+  // Return the result
+  return capitalizedWords;
+}
+
+
+function toggleExample(codeBlock) {
+  codeBlock.classList.toggle("hidden");
+}
