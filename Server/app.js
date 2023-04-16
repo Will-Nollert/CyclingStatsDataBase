@@ -6,9 +6,9 @@ const cors = require("cors");
 const app = express();
 const connectDB = require("./DataBase/db");
 require("dotenv").config();
-
 app.use(cors());
-app.use(express.static(__dirname + "./public"));
+const path = require("path");
+app.use(express.static(path.join(__dirname, "public")));
 /********************
  * MONGOOSE CONNECT *
  * ******************/
