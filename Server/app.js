@@ -1,22 +1,22 @@
 /*************************
- * CONSTANTS AND IMPORTS *
+ * CONSTANTS AND IMPORTS  *
  *************************/
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const connectDB = require("./DataBase/db");
 require("dotenv").config();
-
 app.use(cors());
-app.use(express.static("public"));
+const path = require("path");
+app.use(express.static(path.join(__dirname, "public")));
 /********************
  * MONGOOSE CONNECT *
  * ******************/
 async function startServer() {
   try {
     connectDB();
-    app.listen(3000, () => {
-      console.log(`Server started on port ${process.env.PORT || 3000}`);
+    app.listen(process.env.PORT || 80, () => {
+      console.log(`Server started on port ${process.env.PORT || 80}`);
     });
   } catch (error) {
     console.log("MongoDB connection error: ", error);
