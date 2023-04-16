@@ -120,15 +120,15 @@ function getRankedBicycleRacerRaceHistory() {
 function getRaceByNameAndDate() {
   const name = document.getElementById("raceName").value;
   const date_ = document.getElementById("raceDate").value;
-  fetch(`/races/${name}/${date_}`)
+  fetch(`${raceRouteURLBase}/${name}/${date_}`)
     .then((response) => response.json())
     .then((data) => {
       const raceCard = document.createElement("div");
       raceCard.classList.add("card");
       raceCard.innerHTML = `
         <h2>${data.name} - ${data.date_}</h2>
-        <p>Location: ${data.location}</p>
-        <p>Distance: ${data.distance} miles</p>
+        <p>Won How: ${data.won_how_}</p>
+        <p>Distance: ${data.distance_} miles</p>
         <p>Finishers:</p>
         <ul>
           ${data.finishers.map((finisher) => `<li>${finisher.riderName} - ${finisher.position}</li>`).join("")}
