@@ -16,7 +16,7 @@ async function startServer() {
   try {
     connectDB();
     app.listen(3000, () => {
-      console.log(`Server started on port ${process.env.PORT || 3000}`);
+      console.log(`Server started on port ${process.env.PORT || 80}`);
     });
   } catch (error) {
     console.log("MongoDB connection error: ", error);
