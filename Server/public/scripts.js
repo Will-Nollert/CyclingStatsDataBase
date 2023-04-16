@@ -1,5 +1,5 @@
-const raceRouteURLBase = "http://localhost:3000/api/races";
-const bicycleRacerRouteURLBase = "http://localhost:3000/api/bicycle-racers";
+const raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
+const bicycleRacerRouteURLBase = "https://cycling-databse.herokuapp.com/api/bicycle-racers";
 
 function getAllBicycleRaces() {
   fetch(raceRouteURLBase)
