@@ -22,6 +22,49 @@ function getAllBicycleRacers() {
       }
     });
 }
+function getRacesByName() {
+  const raceName = document.getElementById("raceName").value;
+  fetch(`${raceRouteURLBase}/${raceName}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const racesList = document.getElementById("racesList");
+      racesList.innerHTML = ""; // clear previous results
+      const races = data.slice(0, 10); // get first 10 races
+      for (let race of races) {
+        // create a new card for each race
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        // create a new card body
+        const cardBody = document.createElement("div");
+        cardBody.classList.add("card-body");
+
+        // add race name and date to card
+        const raceName = document.createElement("h5");
+        raceName.classList.add("card-title");
+        raceName.textContent = race.name + " - " + race.date_;
+        cardBody.appendChild(raceName);
+
+        // add finishers to card
+        const finishersList = document.createElement("ul");
+        finishersList.classList.add("list-group", "list-group-flush");
+        for (let finisher of race.finishers) {
+          const finisherItem = document.createElement("li");
+          finisherItem.classList.add("list-group-item");
+          finisherItem.textContent = `${finisher.position}. ${finisher.riderName}`;
+          finishersList.appendChild(finisherItem);
+        }
+        cardBody.appendChild(finishersList);
+
+        // add card body to card
+        card.appendChild(cardBody);
+
+        // add card to races list
+        racesList.appendChild(card);
+      }
+    })
+    .catch((error) => console.error(error));
+}
 
 function getBicycleRacerRaceHistory() {
   const riderName = document.getElementById("riderNameHistory").value;
@@ -97,46 +140,3 @@ function getRaceByNameAndDate() {
     .catch((error) => console.log(error));
 }
 
-function getRacesByName() {
-  const raceName = document.getElementById("raceName").value;
-  fetch(`${raceRouteURLBase}/${raceName}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const racesList = document.getElementById("racesList");
-      racesList.innerHTML = ""; // clear previous results
-      const races = data.slice(0, 10); // get first 10 races
-      for (let race of races) {
-        // create a new card for each race
-        const card = document.createElement("div");
-        card.classList.add("card");
-
-        // create a new card body
-        const cardBody = document.createElement("div");
-        cardBody.classList.add("card-body");
-
-        // add race name and date to card
-        const raceName = document.createElement("h5");
-        raceName.classList.add("card-title");
-        raceName.textContent = race.name + " - " + race.date_;
-        cardBody.appendChild(raceName);
-
-        // add finishers to card
-        const finishersList = document.createElement("ul");
-        finishersList.classList.add("list-group", "list-group-flush");
-        for (let finisher of race.finishers) {
-          const finisherItem = document.createElement("li");
-          finisherItem.classList.add("list-group-item");
-          finisherItem.textContent = `${finisher.position}. ${finisher.riderName}`;
-          finishersList.appendChild(finisherItem);
-        }
-        cardBody.appendChild(finishersList);
-
-        // add card body to card
-        card.appendChild(cardBody);
-
-        // add card to races list
-        racesList.appendChild(card);
-      }
-    })
-    .catch((error) => console.error(error));
-}
