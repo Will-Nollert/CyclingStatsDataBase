@@ -2,9 +2,12 @@
  * CONSTANTS AND IMPORTS *
  *************************/
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const connectDB = require("./DataBase/db");
 require("dotenv").config();
+
+app.use(cors());
 
 /********************
  * MONGOOSE CONNECT *
@@ -26,12 +29,12 @@ startServer();
  * EXPRESS & ROUTERS *
  *********************/
 const racesRouter = require("./Routes/races");
+app.options('/api/races', cors());
 app.use("/api/races", racesRouter);
 
-
 const bicycleRacersRouter = require("./Routes/bicycleRacers");
+app.options('/api/bicycle-racers', cors());
 app.use("/api/bicycle-racers", bicycleRacersRouter);
-
 /****************************
  * CREATE NEW BICYCLERACERS *
  ****************************/

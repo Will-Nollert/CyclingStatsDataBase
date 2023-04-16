@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My API Playground</title>
+    <script src="scripts.js"></script>
+  </head>
+
+  <link rel="stylesheet" href="styles.css">
+  <body>
+    <h1>Welcome to My API Playground</h1>
+
+    <form>
+      <h2>Get All Bicycle Racers</h2>
+      <button type="button" onclick="getAllBicycleRacers()">Get All Bicycle Racers</button>
+      <div id="allBicycleRacers"></div>
+    </form>
+
+    <form>
+      <h2>Get Bicycle Racer by Name</h2>
+      <label for="riderName">Rider Name:</label>
+      <input type="text" id="riderName" name="riderName">
+      <button type="button" onclick="getBicycleRacerByName()">Get Bicycle Racer</button>
+      <div id="bicycleRacer"></div>
+    </form>
+
+    <form>
+      <h2>Get Race History for Bicycle Racer</h2>
+      <label for="riderNameHistory">Rider Name:</label>
+      <input type="text" id="riderNameHistory" name="riderNameHistory">
+      <button type="button" onclick="getBicycleRacerRaceHistory()">Get Race History</button>
+      <div id="bicycleRacerRaceHistory"></div>
+    </form>
+
+    <form>
+      <h2>Get Ranked Race History for Bicycle Racer</h2>
+      <label for="riderNameRankedHistory">Rider Name:</label>
+      <input type="text" id="riderNameRankedHistory" name="riderNameRankedHistory">
+      <button type="button" onclick="getRankedBicycleRacerRaceHistory()">Get Ranked Race History</button>
+      <div id="rankedBicycleRacerRaceHistory"></div>
+    </form>
+
+    </body>
+</html>
+
