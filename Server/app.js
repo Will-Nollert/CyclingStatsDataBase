@@ -15,7 +15,7 @@ app.use(express.static("public"));
 async function startServer() {
   try {
     connectDB();
-    app.listen(3000, () => {
+    app.listen(process.env.PORT || 80, () => {
       console.log(`Server started on port ${process.env.PORT || 80}`);
     });
   } catch (error) {
