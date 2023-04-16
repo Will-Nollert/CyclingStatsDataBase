@@ -69,9 +69,16 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
       };
     });
 
-    const rankedHistory = raceHistory.sort(
-      (a, b) => parseInt(a.position) - parseInt(b.position)
-    );
+    const rankedHistory = raceHistory.sort((a, b) => {
+      // check if a or b is DNF, OTL, or DNS
+      if (['DNF', 'OTL', 'DNS'].includes(a.position)) {
+        return 1; // move a to the bottom
+      } else if (['DNF', 'OTL', 'DNS'].includes(b.position)) {
+        return -1; // move b to the bottom
+      } else {
+        return parseInt(a.position) - parseInt(b.position); // sort by integer value
+      }
+    });
 
     res.json(rankedHistory);
   } catch (error) {
