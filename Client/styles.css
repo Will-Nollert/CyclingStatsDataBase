@@ -45,7 +45,7 @@ body {
     background-color: #3e8e41;
   }
   
-  #allBicycleRacers, #bicycleRacer, #bicycleRacerRaceHistory, #rankedBicycleRacerRaceHistory {
+  #allBicycleRacers, #racesContainer, #bicycleRacer, #bicycleRacerRaceHistory, #rankedBicycleRacerRaceHistory {
     margin-top: 10px;
     font-size: 16px;
     padding: 10px;
@@ -53,5 +53,70 @@ body {
     border-radius: 4px;
     border: 1px solid #ccc;
     white-space: pre-wrap;
+  }
+  
+  .card {
+    background-color: #f7f7f7;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+  
+  .card h2 {
+    font-size: 20px;
+    margin: 0 0 16px;
+  }
+  
+  .card p {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .card .field {
+    margin-bottom: 8px;
+  }
+  
+  .card .field label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .card .field input[type="text"],
+  .card .field input[type="number"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+  }
+  
+  
+  .card-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #dddddd;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-body p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .card-footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #dddddd;
+    padding: 10px;
+    text-align: center;
   }
   

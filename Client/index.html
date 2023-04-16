@@ -10,17 +10,17 @@
     <h1>Welcome to My API Playground</h1>
 
     <form>
-      <h2>Get All Bicycle Racers</h2>
+      <h2>Get All Bicycle Races</h2>
       <button type="button" onclick="getAllBicycleRacers()">Get All Bicycle Racers</button>
       <div id="allBicycleRacers"></div>
     </form>
 
     <form>
-      <h2>Get Bicycle Racer by Name</h2>
-      <label for="riderName">Rider Name:</label>
-      <input type="text" id="riderName" name="riderName">
-      <button type="button" onclick="getBicycleRacerByName()">Get Bicycle Racer</button>
-      <div id="bicycleRacer"></div>
+      <h2>Get Every Race by Name</h2>
+      <label for="racesList">Race Name:</label>
+      <input type="text" id="raceName" name="raceName">
+      <button type="button" onclick="getRacesByName()">Get Bicycle Racer</button>
+      <div id="racesList"></div>
     </form>
 
     <form>
@@ -38,7 +38,16 @@
       <button type="button" onclick="getRankedBicycleRacerRaceHistory()">Get Ranked Race History</button>
       <div id="rankedBicycleRacerRaceHistory"></div>
     </form>
-
+    <form>
+        <h2>Get Race by Name and Date</h2>
+        <label for="raceName">Name:</label>
+        <input type="text" id="raceName" name="raceName">
+        <label for="raceDate">Date:</label>
+        <input type="text" id="raceDate" name="raceDate">
+        <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
+        <div id="racesContainer"></div>
+      </form>
+      
     </body>
 </html>
 
