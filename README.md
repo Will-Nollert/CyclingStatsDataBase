@@ -7,6 +7,9 @@ live URL: https://cycling-databse.herokuapp.com/
 
 This URL will take you to a simple API playground where you can see example routes for the API, and what the expected response objects are. 
 
+## Demo 
+![API playground](https://user-images.githubusercontent.com/90637390/232357675-368d0f67-00bc-4e09-9ef4-32e8a08b3606.jpg)
+
 
 ## Tech Stack
 Javascript, Express, NodeJS, Mongoose, MongoDB Atlas
