@@ -2,7 +2,7 @@ const BicycleRacer = require("./DataBase/Models/bicycleRacer");
 const RacerFinisher = require("./DataBase/Models/racerFinisherObject");
 
 // Function to update the BicycleRacer model with the races and positions for each racer
-export async function updateBicycleRacers() {
+/* export async function updateBicycleRacers() {
     try {
       // Find all racer finishers
       const racerFinishers = await RacerFinisher.find();
@@ -35,4 +35,21 @@ export async function updateBicycleRacers() {
     } catch (error) {
       console.log(error.message);
     }
+  } */
+
+  async function getAllRiderNames() {
+    try {
+      const racers = await BicycleRacer.find();
+      return racers.map((racer) => {
+        const nameParts = racer.riderName.split(' ');
+        const lastName = nameParts.pop().replace(/\s/g, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const formattedName = `${nameParts.map((part) => part.toLowerCase()).join('-')}-${lastName.toLowerCase()}`;
+        console.log(formattedName);
+        return formattedName;
+      });
+    } catch (error) {
+      console.log(error.message);
+      return [];
+    }
   }
+  getAllRiderNames();
