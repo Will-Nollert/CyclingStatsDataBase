@@ -25,11 +25,9 @@ function getBicycleRacer() {
       height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = "Relative Strength: ";
-      for (const strength of data.relativeStrength) {
-        console.log(strength);
-        const strengthText = strength.type + (strength.score ? ` ${strength.score}` : '');
+      for (const [type, score] of Object.entries(data.relativeStrength)) {
         const strengthElement = document.createElement("p");
-        strengthElement.innerText = strengthText;
+        strengthElement.innerText = `${type}: ${score}`;
         relativeStrength.appendChild(strengthElement);
       }
       bicycleRacer.appendChild(relativeStrength);
