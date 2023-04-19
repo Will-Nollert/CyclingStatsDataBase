@@ -21,12 +21,13 @@ function getBicycleRacer() {
       const height = document.createElement("p");
       height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
-      relativeStrength.innerText = `Relative Strength: `;
-      data.relativeStrength.forEach((strength) => {
-        const strengthText = document.createTextNode(`${strength.type} ${strength}, `);
-        relativeStrength.appendChild(strengthText);
-      });
-      bicycleRacer.appendChild(relativeStrength);
+relativeStrength.innerText = "Relative Strength: ";
+data.relativeStrength.forEach((strength) => {
+  const strengthText = document.createTextNode(`${strength.type} ${strength.score}, `);
+  relativeStrength.appendChild(strengthText);
+});
+bicycleRacer.appendChild(relativeStrength);
+
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
