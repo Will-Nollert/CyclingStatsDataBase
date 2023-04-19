@@ -17,16 +17,20 @@ function getBicycleRacer() {
       const nationality = document.createElement("p");
       nationality.innerText = `Nationality: ${data.nationality}`;
       const weight = document.createElement("p");
-      weight.innerText = `Weight: ${data.weight + 'kg'}`;
+      weight.innerText = `Weight: ${data.weight} kg`;
       const height = document.createElement("p");
-      height.innerText = `Height: ${data.height + "m"}`;
+      height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
-      //map over relativeStrength array and create a new p element for each
-      relativeStrength.innerText = `Relative Strength: ${data.relativeStrength.map((strength) => strength.type + " " + strength.score).join(", ")}`;
+      relativeStrength.innerText = `Relative Strength: `;
+      for (const strength of data.relativeStrength) {
+        const strengthElement = document.createElement("p");
+        strengthElement.innerText = `${strength.type}: ${strength.score}`;
+        relativeStrength.appendChild(strengthElement);
+      }
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
-      bicycleRacer.appendChild(weight );
+      bicycleRacer.appendChild(weight);
       bicycleRacer.appendChild(height);
       bicycleRacer.appendChild(relativeStrength);
     })
@@ -34,6 +38,7 @@ function getBicycleRacer() {
       console.error("Error fetching bicycle racer: ", error);
     });
 }
+
 
 
 
