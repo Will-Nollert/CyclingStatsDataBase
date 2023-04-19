@@ -40,10 +40,15 @@
         placeholder="Wout Van Aert"
       />
       <br />
+      <span>
       <button type="button" onclick="getBicycleRacer()">
         Get Rider Information
       </button>
+      <button type="button" onclick="hideInfo('bicycleRacer')">Hide Data</button>
       <div id="bicycleRacer"></div>
+      <br />
+      </button>
+    </span>
     </form>
     
 
@@ -99,9 +104,14 @@ Example Response:  {
         placeholder="Paris Roubaix"
       />
       <br />
+      <span>
       <button type="button" onclick="getRacesByName()">Get Races</button>
+      <button type="button" onclick="hideInfo('racesList')">Hide Data</button>
+
       <div id="racesList"></div>
+      </span>
     </form>
+
 
     <form>
       <h2>Get Race History for Bicycle Racer</h2>
@@ -139,11 +149,15 @@ Example Response: [
         placeholder="Wout Van Aert "
       />
       <br />
+      <span>
       <button type="button" onclick="getBicycleRacerRaceHistory()">
         Get Race History
       </button>
+      <button type="button" onclick="hideInfo('bicycleRacerRaceHistory')">Hide Data</button>
       <div id="bicycleRacerRaceHistory"></div>
+      </span>
     </form>
+
 
     <form>
       <h2>Get Ranked Race History for Bicycle Racer</h2>
@@ -180,10 +194,13 @@ Example Response:  {
         size="23"
       />
       <br />
+      <span>
       <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
         Get Ranked Race History
       </button>
+      <button type="button" onclick="hideInfo('rankedBicycleRacerRaceHistory')">Hide Data</button>
       <div id="rankedBicycleRacerRaceHistory"></div>
+      </span>
     </form>
 
     <form>
@@ -246,8 +263,11 @@ Example Response: {
         placeholder="17 April 2022"
       />
       <br />
+      <span>
       <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
+      <button type="button" onclick="hideInfo('racesContainer')">Hide Data</button>
       <div id="racesContainer"></div>
+      </span>
     </form>
 
     <form>
@@ -279,11 +299,13 @@ Exaple Response: [
   
   ]
       </pre>
-
+<span>
       <button type="button" onclick="getAllBicycleRaces()">
         Get All Bicycle Races
       </button>
+      <button type="button" onclick="hideInfo('allBicycleRacers')">Hide Data</button>
       <div id="allBicycleRacers"></div>
+</span>
     </form>
   </body>
 </html>

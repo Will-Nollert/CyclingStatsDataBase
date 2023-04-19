@@ -25,19 +25,28 @@ function getBicycleRacer() {
       height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = "Relative Strength: ";
-      for (const [type, score] of Object.entries(data.relativeStrength)) {
-        const strengthElement = document.createElement("p");
-        strengthElement.innerText = `${type}: ${score}`;
-        relativeStrength.appendChild(strengthElement);
+      const relativeStrengthList = document.createElement("ul");
+     let riderRelativetrengthValues = data.relativeStrength[0];
+     for (const [key, value] of Object.entries(riderRelativetrengthValues)) {
+      if (key !== '_id') {
+        const strengthItem = document.createElement("li");
+        strengthItem.innerText = `${key}: ${value}`;
+        relativeStrengthList.appendChild(strengthItem);
       }
-      bicycleRacer.appendChild(relativeStrength);
-
+    }
+    relativeStrength.appendChild(relativeStrengthList);
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
       bicycleRacer.appendChild(weight);
       bicycleRacer.appendChild(height);
       bicycleRacer.appendChild(relativeStrength);
+    })
+    //check if the bicycleRacer class is toggled on
+    .then(() => {
+      if (bicycleRacer.classList.contains("hidden")) {
+        bicycleRacer.classList.remove("hidden");
+      }
     })
     .catch((error) => {
       console.error("Error fetching bicycle racer: ", error);
@@ -222,4 +231,9 @@ function capitalizeRiderName(riderName) {
 
 function toggleExample(codeBlock) {
   codeBlock.classList.toggle("hidden");
+}
+
+function hideInfo() {
+  const bicycleRacer = document.getElementById("bicycleRacer");
+  bicycleRacer.classList.toggle("hidden");
 }
