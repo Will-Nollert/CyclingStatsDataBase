@@ -17,17 +17,17 @@ function getBicycleRacer() {
       const nationality = document.createElement("p");
       nationality.innerText = `Nationality: ${data.nationality}`;
       const weight = document.createElement("p");
-      weight.innerText = `Weight: ${data.weight}`;
+      weight.innerText = `Weight: ${data.weight + 'kg'}`;
       const height = document.createElement("p");
-      height.innerText = `Height: ${data.height}`;
+      height.innerText = `Height: ${data.height + "m"}`;
       const relativeStrength = document.createElement("p");
       //map over relativeStrength array and create a new p element for each
       relativeStrength.innerText = `Relative Strength: ${data.relativeStrength.map((strength) => strength.type + " " + strength.score).join(", ")}`;
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
-      bicycleRacer.appendChild(weight + 'kg');
-      bicycleRacer.appendChild(height + "m");
+      bicycleRacer.appendChild(weight );
+      bicycleRacer.appendChild(height);
       bicycleRacer.appendChild(relativeStrength);
     })
     .catch((error) => {
