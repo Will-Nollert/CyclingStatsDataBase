@@ -3,13 +3,13 @@ const bicycleRacerRouteURLBase = "https://cycling-databse.herokuapp.com/api/bicy
 
 
 function getBicycleRacer() {
-  let riderName = document.getElementById("riderName").value;
-  riderName = riderName.toLowerCase().replace(/\s+/g, '-');
+  const riderName = document.getElementById("riderName").value.toLowerCase().replace(/\s+/g, '-');
+  const bicycleRacer = document.getElementById("bicycleRacer");
+  bicycleRacer.innerHTML = "";
+
   fetch(`${bicycleRacerRouteURLBase}/${riderName}`)
     .then((response) => response.json())
     .then((data) => {
-      const bicycleRacerInfo = document.getElementById("bicycleRacerInfo");
-      bicycleRacerInfo.innerHTML = "";
       const name = document.createElement("h3");
       name.innerText = data.riderName;
       const age = document.createElement("p");
@@ -18,15 +18,16 @@ function getBicycleRacer() {
       team.innerText = `Team: ${data.team}`;
       const nationality = document.createElement("p");
       nationality.innerText = `Nationality: ${data.nationality}`;
-      bicycleRacerInfo.appendChild(name);
-      bicycleRacerInfo.appendChild(age);
-      bicycleRacerInfo.appendChild(team);
-      bicycleRacerInfo.appendChild(nationality);
+      bicycleRacer.appendChild(name);
+      bicycleRacer.appendChild(age);
+      bicycleRacer.appendChild(team);
+      bicycleRacer.appendChild(nationality);
     })
     .catch((error) => {
       console.error("Error fetching bicycle racer: ", error);
     });
 }
+
 
 
 function getAllBicycleRaces() {
