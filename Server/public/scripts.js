@@ -22,11 +22,11 @@ function getBicycleRacer() {
       height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = `Relative Strength: `;
-      for (const strength of data.relativeStrength) {
-        const strengthElement = document.createElement("p");
-        strengthElement.innerText = `${strength.type}: ${strength.score}`;
-        relativeStrength.appendChild(strengthElement);
-      }
+      data.relativeStrength.forEach((strength) => {
+        const strengthText = document.createTextNode(`${strength.type} ${strength}, `);
+        relativeStrength.appendChild(strengthText);
+      });
+      bicycleRacer.appendChild(relativeStrength);
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
