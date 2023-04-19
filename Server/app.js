@@ -24,21 +24,17 @@ async function startServer() {
 }
 startServer();
 
-
 /*********************
  * EXPRESS & ROUTERS *
  *********************/
 const racesRouter = require("./Routes/races");
-app.options('/api/races', cors());
+app.options("/api/races", cors());
 app.use("/api/races", racesRouter);
 
 const bicycleRacersRouter = require("./Routes/bicycleRacers");
-app.options('/api/bicycle-racers', cors());
+app.options("/api/bicycle-racers", cors());
 app.use("/api/bicycle-racers", bicycleRacersRouter);
-/****************************
- * CREATE NEW BICYCLERACERS *
- ****************************/
-/* scrapes through race results and creates a new bicycleRacer 
-for every unique riderName in the RacerFinisher collection */
-//import { updateBicycleRacers } from "./utils";
-//updateBicycleRacers() 
+
+
+
+
