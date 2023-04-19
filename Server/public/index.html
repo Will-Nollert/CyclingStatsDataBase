@@ -65,7 +65,7 @@
         </form>
         
         <form>
-        <h2>Get Race History Of Racer</h2>
+        <h2>Get Race History Of One Racer</h2>
         <hr />
         <button
         type="button"
@@ -110,7 +110,7 @@
         </form>
         
         <form>
-        <h2>Get Race History Of Racer Ranked By Position</h2>
+        <h2>Get Race History Of One Racer Ranked By Position</h2>
         <hr />
         <button
           type="button"
@@ -230,39 +230,38 @@ Example Response:  {
         Show Example
       </button>
       <pre class="hidden" id="example5">
-fetch('/api/races/{race_name}/{race_date}')
-
-Example Response: {
-  "_id": "643973fbfdb78b8dbe432fe2",
-  "name": "paris-roubaix",
-  "date_": "09_April_2023",
-  "start_time_": "11:25",
-  "avg_speed_winner_": "46_841_km/h",
-  "race_category_": "ME_-_Men_Elite",
-  "distance_": "256_6_km",
-  "points_scale_": "1_WT_A",
-  "uci_scale_": "UCI_WR_Monument",
-  "parcours_type_": "",
-  "profilescore_": "4",
-  "vert_meters_": "1380",
-  "departure_": "Compiègne",
-  "arrival_": "Roubaix",
-  "race_ranking_": "20",
-  "startlist_quality_score_": "775",
-  "won_how_": "15_1_km_solo",
-  "avg_temperature_": "16_°C",
-  "finishers": [
-      {
-          "position": "1",
-          "riderName": "VAN DER POEL Mathieu"
-      },
-      {
-          "position": "2",
-          "riderName": "PHILIPSEN Jasper"
-      }, etc...]
-    }
-</pre
-      >
+    fetch('/api/races/{race_name}/{race_date}')
+    
+    Example Response: {
+      "_id": "643973fbfdb78b8dbe432fe2",
+      "name": "paris-roubaix",
+      "date_": "09_April_2023",
+      "start_time_": "11:25",
+      "avg_speed_winner_": "46_841_km/h",
+      "race_category_": "ME_-_Men_Elite",
+      "distance_": "256_6_km",
+      "points_scale_": "1_WT_A",
+      "uci_scale_": "UCI_WR_Monument",
+      "parcours_type_": "",
+      "profilescore_": "4",
+      "vert_meters_": "1380",
+      "departure_": "Compiègne",
+      "arrival_": "Roubaix",
+      "race_ranking_": "20",
+      "startlist_quality_score_": "775",
+      "won_how_": "15_1_km_solo",
+      "avg_temperature_": "16_°C",
+      "finishers": [
+          {
+              "position": "1",
+              "riderName": "VAN DER POEL Mathieu"
+          },
+          {
+              "position": "2",
+              "riderName": "PHILIPSEN Jasper"
+          }, etc...]
+        }
+      </pre>
       <br />
       <label for="raceName">Name:</label>
       <input
@@ -273,16 +272,15 @@ Example Response: {
       />
       <label for="raceDate">Date:</label>
       <input
-        type="text"
+        type="date"
         id="raceDate"
         name="raceDate"
-        placeholder="17 April 2022"
       />
       <br />
       <span>
-      <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
-      <button type="button" onclick="toggleElementVisibility('racesContainer')">Hide Data</button>
-      <div id="racesContainer"></div>
+        <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
+        <button type="button" onclick="toggleElementVisibility('racesContainer')">Hide Data</button>
+        <div id="racesContainer"></div>
       </span>
     </form>
     

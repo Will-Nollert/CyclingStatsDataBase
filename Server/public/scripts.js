@@ -179,11 +179,15 @@ function getRaceByNameAndDate() {
   raceName = raceName.toLowerCase().replace(/\s+/g, "-");
 
   let date_ = document.getElementById("raceDate").value;
-  date_ = date_
-    .toLowerCase()
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .replace(/\s+/g, "_");
-
+  const regex = /(\d{4})-(\d{2})-(\d{2})/;
+  const [_, year, month, day] = date_.match(regex);
+const months = [
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
+];
+const monthStr = months[parseInt(month) - 1];
+const output = `${day}_${monthStr}_${year}`;
+date_ = output
   fetch(`${raceRouteURLBase}/${raceName}/${date_}`)
     .then((response) => response.json())
     .then((data) => {
@@ -233,10 +237,17 @@ function toggleExample(codeBlock) {
 }
 
 function toggleElementVisibility(id) {
-  var element = document.getElementById(id);
-  if (element.style.display === "none") {
-    element.style.display = "block";
-  } else {
-    element.style.display = "none";
-  }
+  const element = document.getElementById(id);
+  element.classList.toggle("hidden");
 }
+
+// Get all dropdown buttons
+const dropdownBtns = document.querySelectorAll(".dropdown-btn");
+
+// Add click event listeners to all dropdown buttons
+dropdownBtns.forEach((dropdownBtn) => {
+  dropdownBtn.addEventListener("click", () => {
+    // Toggle the display of the dropdown content
+    dropdownBtn.nextElementSibling.classList.toggle("hidden");
+  });
+});
