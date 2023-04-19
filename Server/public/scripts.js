@@ -43,11 +43,11 @@ function getBicycleRacer() {
       bicycleRacer.appendChild(relativeStrength);
     })
     //check if the bicycleRacer class is toggled on
-    .then(() => {
+/*     .then(() => {
       if (bicycleRacer.classList.contains("hidden")) {
         bicycleRacer.classList.remove("hidden");
       }
-    })
+    }) */
     .catch((error) => {
       console.error("Error fetching bicycle racer: ", error);
     });
@@ -175,7 +175,7 @@ function getRankedBicycleRacerRaceHistory() {
 }
 
 function getRaceByNameAndDate() {
-  let raceName = document.getElementById("raceName1").value;
+  let raceName = document.getElementById("raceName").value;
   raceName = raceName.toLowerCase().replace(/\s+/g, "-");
 
   let date_ = document.getElementById("raceDate").value;
@@ -184,7 +184,6 @@ function getRaceByNameAndDate() {
     .replace(/\b\w/g, (c) => c.toUpperCase())
     .replace(/\s+/g, "_");
 
-  console.log(`${raceRouteURLBase}/${raceName}/${date_}`);
   fetch(`${raceRouteURLBase}/${raceName}/${date_}`)
     .then((response) => response.json())
     .then((data) => {
@@ -233,7 +232,8 @@ function toggleExample(codeBlock) {
   codeBlock.classList.toggle("hidden");
 }
 
-function hideInfo() {
-  const bicycleRacer = document.getElementById("bicycleRacer");
-  bicycleRacer.classList.toggle("hidden");
+function toggleElementVisibility(id) {
+  const element = document.getElementById(id);
+  element.classList.toggle("hidden");
 }
+

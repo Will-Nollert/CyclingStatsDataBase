@@ -10,7 +10,7 @@
     <h1>Welcome to My API Playground</h1>
 
     <form>
-      <h2>Get Bicycle Racer Information</h2>
+      <h2>Get  Racer Information</h2>
       <hr />
       <button
         type="button"
@@ -24,10 +24,20 @@
     
     Example Response: {
       "riderName": "Wout Van Aert",
-      "country": "Belgium",
-      "age": 27,
-      "height": "1.84 m",
-      "weight": "78 kg"
+      "dateOfBirth": "2nd March 1998",
+      "age": 25,
+      "height": 1.76,
+      "nationality": "Belgium",
+      "weight": 75,
+      "relativeStrength": [
+          {
+              "gc": 9.02,
+              "timeTrial": 4.3,
+              "sprint": 100,
+              "climber": 33.77,
+              "_id": "643f04fd62ca93665c252c6b"
+          }
+      ]
     }
     </pre>
       <br />
@@ -42,18 +52,107 @@
       <br />
       <span>
       <button type="button" onclick="getBicycleRacer()">
-        Get Rider Information
+        Get Racer Information
       </button>
-      <button type="button" onclick="hideInfo('bicycleRacer')">Hide Data</button>
+      <button type="button" onclick="toggleElementVisibility('bicycleRacer')">Hide Data</button>
       <div id="bicycleRacer"></div>
       <br />
       </button>
     </span>
     </form>
     
+    <form>
+      <h2>Get Race History Of Racer</h2>
+      <hr />
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example3'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example3">
+fetch('/api/bicycle-racers/{name}/history')
+
+Example Response: [
+{
+    "raceName": "paris-roubaix",
+    "date": "09_April_2023",
+    "position": "1"
+},
+{
+    "raceName": "paris-roubaix",
+    "date": "17_April_2022",
+    "position": "9"
+}, etc...]
+</pre
+      >
+      <br />
+      <label for="riderNameHistory">Rider Name:</label>
+      <input
+        type="text"
+        id="riderNameHistory"
+        name="riderNameHistory"
+        size="30"
+        placeholder="Wout Van Aert "
+      />
+      <br />
+      <span>
+      <button type="button" onclick="getBicycleRacerRaceHistory()">
+        Get Race History
+      </button>
+      <button type="button" onclick="toggleElementVisibility('bicycleRacerRaceHistory')">Hide Data</button>
+      <div id="bicycleRacerRaceHistory"></div>
+      </span>
+    </form>
+
 
     <form>
-      <h2>Get Every Race by Name</h2>
+      <h2>Get Race History Of Racer Ranked By Position</h2>
+      <hr />
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example4'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example4">
+fetch('/api/bicycle-racers/{name}/rankedHistory')
+
+Example Response:  {
+  "raceName": "paris-roubaix",
+  "raceDate": "09_April_2023",
+  "position": "1"
+},
+{
+  "raceName": "amstel-gold-race",
+  "raceDate": "21_April_2019",
+  "position": "1"
+}, etc...]
+</pre
+      >
+      <br />
+      <label for="riderNameRankedHistory">Rider Name:</label>
+      <input
+        type="text"
+        id="riderNameRankedHistory"
+        name="riderNameRankedHistory"
+        placeholder="Søren Kragh Anderson "
+        size="23"
+      />
+      <br />
+      <span>
+      <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
+        Get Ranked Race History
+      </button>
+      <button type="button" onclick="toggleElementVisibility('rankedBicycleRacerRaceHistory')">Hide Data</button>
+      <div id="rankedBicycleRacerRaceHistory"></div>
+      </span>
+    </form>
+
+    <form>
+      <h2>Get Every Race Instance by Name</h2>
       <hr />
       <button
         type="button"
@@ -106,7 +205,7 @@ Example Response:  {
       <br />
       <span>
       <button type="button" onclick="getRacesByName()">Get Races</button>
-      <button type="button" onclick="hideInfo('racesList')">Hide Data</button>
+      <button type="button" onclick="toggleElementVisibility('racesList')">Hide Data</button>
 
       <div id="racesList"></div>
       </span>
@@ -114,98 +213,8 @@ Example Response:  {
 
 
     <form>
-      <h2>Get Race History for Bicycle Racer</h2>
       <hr />
-      <button
-        type="button"
-        class="example-button"
-        onclick="toggleExample(document.getElementById('example3'))"
-      >
-        Show Example
-      </button>
-      <pre class="hidden" id="example3">
-fetch('/api/bicycle-racers/{name}/history')
-
-Example Response: [
-{
-    "raceName": "paris-roubaix",
-    "date": "09_April_2023",
-    "position": "1"
-},
-{
-    "raceName": "paris-roubaix",
-    "date": "17_April_2022",
-    "position": "9"
-}, etc...]
-</pre
-      >
-      <br />
-      <label for="riderNameHistory">Rider Name:</label>
-      <input
-        type="text"
-        id="riderNameHistory"
-        name="riderNameHistory"
-        size="30"
-        placeholder="Wout Van Aert "
-      />
-      <br />
-      <span>
-      <button type="button" onclick="getBicycleRacerRaceHistory()">
-        Get Race History
-      </button>
-      <button type="button" onclick="hideInfo('bicycleRacerRaceHistory')">Hide Data</button>
-      <div id="bicycleRacerRaceHistory"></div>
-      </span>
-    </form>
-
-
-    <form>
-      <h2>Get Ranked Race History for Bicycle Racer</h2>
-      <hr />
-      <button
-        type="button"
-        class="example-button"
-        onclick="toggleExample(document.getElementById('example4'))"
-      >
-        Show Example
-      </button>
-      <pre class="hidden" id="example4">
-fetch('/api/bicycle-racers/{name}/rankedHistory')
-
-Example Response:  {
-  "raceName": "paris-roubaix",
-  "raceDate": "09_April_2023",
-  "position": "1"
-},
-{
-  "raceName": "amstel-gold-race",
-  "raceDate": "21_April_2019",
-  "position": "1"
-}, etc...]
-</pre
-      >
-      <br />
-      <label for="riderNameRankedHistory">Rider Name:</label>
-      <input
-        type="text"
-        id="riderNameRankedHistory"
-        name="riderNameRankedHistory"
-        placeholder="Søren Kragh Anderson "
-        size="23"
-      />
-      <br />
-      <span>
-      <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
-        Get Ranked Race History
-      </button>
-      <button type="button" onclick="hideInfo('rankedBicycleRacerRaceHistory')">Hide Data</button>
-      <div id="rankedBicycleRacerRaceHistory"></div>
-      </span>
-    </form>
-
-    <form>
-      <hr />
-      <h2>Get Race by Name and Date</h2>
+      <h2>Get One Race by Name and Date</h2>
       <button
         type="button"
         class="example-button"
@@ -265,7 +274,7 @@ Example Response: {
       <br />
       <span>
       <button type="button" onclick="getRaceByNameAndDate()">Get Race</button>
-      <button type="button" onclick="hideInfo('racesContainer')">Hide Data</button>
+      <button type="button" onclick="toggleElementVisibility('racesContainer')">Hide Data</button>
       <div id="racesContainer"></div>
       </span>
     </form>
@@ -303,7 +312,7 @@ Exaple Response: [
       <button type="button" onclick="getAllBicycleRaces()">
         Get All Bicycle Races
       </button>
-      <button type="button" onclick="hideInfo('allBicycleRacers')">Hide Data</button>
+      <button type="button" onclick="toggleElementVisibility('allBicycleRacers')">Hide Data</button>
       <div id="allBicycleRacers"></div>
 </span>
     </form>
