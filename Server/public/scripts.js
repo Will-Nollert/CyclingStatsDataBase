@@ -1,9 +1,12 @@
 const raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
-const bicycleRacerRouteURLBase = "https://cycling-databse.herokuapp.com/api/bicycle-racers";
-
+const bicycleRacerRouteURLBase =
+  "https://cycling-databse.herokuapp.com/api/bicycle-racers";
 
 function getBicycleRacer() {
-  const riderName = document.getElementById("riderName").value.toLowerCase().replace(/\s+/g, '-');
+  const riderName = document
+    .getElementById("riderName")
+    .value.toLowerCase()
+    .replace(/\s+/g, "-");
   const bicycleRacer = document.getElementById("bicycleRacer");
   bicycleRacer.innerHTML = "";
 
@@ -21,12 +24,14 @@ function getBicycleRacer() {
       const height = document.createElement("p");
       height.innerText = `Height: ${data.height} m`;
       const relativeStrength = document.createElement("p");
-relativeStrength.innerText = "Relative Strength: ";
-data.relativeStrength.forEach((strength) => {
-  const strengthText = document.createTextNode(`${strength.type} ${strength.score}, `);
-  relativeStrength.appendChild(strengthText);
-});
-bicycleRacer.appendChild(relativeStrength);
+      relativeStrength.innerText = "Relative Strength: ";
+      for (const strength of data.relativeStrength) {
+        const strengthText = strength.type + (strength.score ? ` ${strength.score}` : '');
+        const strengthElement = document.createElement("p");
+        strengthElement.innerText = strengthText;
+        relativeStrength.appendChild(strengthElement);
+      }
+      bicycleRacer.appendChild(relativeStrength);
 
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
@@ -39,9 +44,6 @@ bicycleRacer.appendChild(relativeStrength);
       console.error("Error fetching bicycle racer: ", error);
     });
 }
-
-
-
 
 function getAllBicycleRaces() {
   fetch(raceRouteURLBase)
@@ -58,7 +60,8 @@ function getAllBicycleRaces() {
         date.innerText = "Date: " + race.date_;
         racerCard.appendChild(date);
         const avg_speed_winner_ = document.createElement("p");
-        avg_speed_winner_.innerText = "Winner Avg Speed: " + race.avg_speed_winner_;
+        avg_speed_winner_.innerText =
+          "Winner Avg Speed: " + race.avg_speed_winner_;
         racerCard.appendChild(avg_speed_winner_);
         allBicycleRacers.appendChild(racerCard);
       }
@@ -66,7 +69,7 @@ function getAllBicycleRaces() {
 }
 function getRacesByName() {
   let raceName = document.getElementById("raceName").value;
-  raceName = raceName.toLowerCase().replace(/\s+/g, '-');
+  raceName = raceName.toLowerCase().replace(/\s+/g, "-");
   fetch(`${raceRouteURLBase}/${raceName}`)
     .then((response) => response.json())
     .then((data) => {
@@ -111,7 +114,7 @@ function getRacesByName() {
 
 function getBicycleRacerRaceHistory() {
   let riderName = document.getElementById("riderNameHistory").value;
-  riderName = riderName.toLowerCase().replace(/\s+/g, '-');
+  riderName = riderName.toLowerCase().replace(/\s+/g, "-");
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/history`)
     .then((response) => response.json())
     .then((data) => {
@@ -138,7 +141,7 @@ function getBicycleRacerRaceHistory() {
 
 function getRankedBicycleRacerRaceHistory() {
   let riderName = document.getElementById("riderNameRankedHistory").value;
-  riderName = riderName.toLowerCase().replace(/\s+/g, '-');
+  riderName = riderName.toLowerCase().replace(/\s+/g, "-");
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/rankedHistory`)
     .then((response) => response.json())
     .then((data) => {
@@ -163,13 +166,15 @@ function getRankedBicycleRacerRaceHistory() {
     });
 }
 
-
 function getRaceByNameAndDate() {
   let raceName = document.getElementById("raceName1").value;
-  raceName = raceName.toLowerCase().replace(/\s+/g, '-');
+  raceName = raceName.toLowerCase().replace(/\s+/g, "-");
 
   let date_ = document.getElementById("raceDate").value;
-  date_ = date_.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\s+/g, '_');
+  date_ = date_
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/\s+/g, "_");
 
   console.log(`${raceRouteURLBase}/${raceName}/${date_}`);
   fetch(`${raceRouteURLBase}/${raceName}/${date_}`)
@@ -183,7 +188,12 @@ function getRaceByNameAndDate() {
         <p>Distance: ${data.distance_} miles</p>
         <p>Finishers:</p>
         <ul>
-          ${data.finishers.map((finisher) => `<li>${finisher.riderName} - ${finisher.position}</li>`).join("")}
+          ${data.finishers
+            .map(
+              (finisher) =>
+                `<li>${finisher.riderName} - ${finisher.position}</li>`
+            )
+            .join("")}
         </ul>
       `;
       const racesContainer = document.getElementById("racesContainer");
@@ -197,7 +207,7 @@ function getRaceByNameAndDate() {
  *********************/
 function capitalizeRiderName(riderName) {
   // Split the rider name into an array of words
-  const words = riderName.split(' ');
+  const words = riderName.split(" ");
 
   // Capitalize each word (except the last one)
   for (let i = 0; i < words.length - 1; i++) {
@@ -205,7 +215,7 @@ function capitalizeRiderName(riderName) {
   }
 
   // Join the capitalized words back together with spaces
-  const capitalizedWords = words.join(' ');
+  const capitalizedWords = words.join(" ");
 
   // Return the result
   return capitalizedWords;
