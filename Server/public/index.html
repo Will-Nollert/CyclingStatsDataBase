@@ -10,6 +10,45 @@
     <h1>Welcome to My API Playground</h1>
 
     <form>
+      <h2>Get Bicycle Racer Information</h2>
+      <hr />
+      <button
+        type="button"
+        class="example-button"
+        onclick="toggleExample(document.getElementById('example4'))"
+      >
+        Show Example
+      </button>
+      <pre class="hidden" id="example4">
+    fetch('/api/bicycle-racers/{name}')
+    
+    Example Response: {
+      "riderName": "Wout Van Aert",
+      "country": "Belgium",
+      "team": "Team Jumbo-Visma",
+      "age": 27,
+      "height": "1.84 m",
+      "weight": "78 kg"
+    }
+    </pre>
+      <br />
+      <label for="riderName">Rider Name:</label>
+      <input
+        type="text"
+        id="riderName"
+        name="riderName"
+        size="30"
+        placeholder="Wout Van Aert"
+      />
+      <br />
+      <button type="button" onclick="getBicycleRacer()">
+        Get Rider Information
+      </button>
+      <div id="bicycleRacer"></div>
+    </form>
+    
+
+    <form>
       <h2>Get Every Race by Name</h2>
       <hr />
       <button
