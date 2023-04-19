@@ -24,8 +24,10 @@ function getBicycleRacer() {
       relativeStrength.innerText = `Relative Strength: ${data.relativeStrength}`;
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
-      bicycleRacer.appendChild(team);
       bicycleRacer.appendChild(nationality);
+      bicycleRacer.appendChild(weight);
+      bicycleRacer.appendChild(height);
+      bicycleRacer.appendChild(relativeStrength);
     })
     .catch((error) => {
       console.error("Error fetching bicycle racer: ", error);
