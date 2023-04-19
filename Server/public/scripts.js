@@ -23,7 +23,8 @@ function getAllBicycleRaces() {
     });
 }
 function getRacesByName() {
-  const raceName = document.getElementById("raceName").value;
+  let raceName = document.getElementById("raceName").value;
+  raceName = raceName.toLowerCase().replace(/\s+/g, '-');
   fetch(`${raceRouteURLBase}/${raceName}`)
     .then((response) => response.json())
     .then((data) => {
@@ -68,7 +69,7 @@ function getRacesByName() {
 
 function getBicycleRacerRaceHistory() {
   let riderName = document.getElementById("riderNameHistory").value;
-  riderName = capitalizeRiderName(riderName);
+  riderName = riderName.toLowerCase().replace(/\s+/g, '-');
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/history`)
     .then((response) => response.json())
     .then((data) => {
@@ -92,9 +93,10 @@ function getBicycleRacerRaceHistory() {
       });
     });
 }
+
 function getRankedBicycleRacerRaceHistory() {
   let riderName = document.getElementById("riderNameRankedHistory").value;
-riderName = capitalizeRiderName(riderName);
+  riderName = riderName.toLowerCase().replace(/\s+/g, '-');
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/rankedHistory`)
     .then((response) => response.json())
     .then((data) => {
@@ -119,10 +121,16 @@ riderName = capitalizeRiderName(riderName);
     });
 }
 
+
 function getRaceByNameAndDate() {
-  const name = document.getElementById("raceName").value;
-  const date_ = document.getElementById("raceDate").value;
-  fetch(`${raceRouteURLBase}/${name}/${date_}`)
+  let raceName = document.getElementById("raceName1").value;
+  raceName = raceName.toLowerCase().replace(/\s+/g, '-');
+
+  let date_ = document.getElementById("raceDate").value;
+  date_ = date_.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\s+/g, '_');
+
+  console.log(`${raceRouteURLBase}/${raceName}/${date_}`);
+  fetch(`${raceRouteURLBase}/${raceName}/${date_}`)
     .then((response) => response.json())
     .then((data) => {
       const raceCard = document.createElement("div");
@@ -160,7 +168,6 @@ function capitalizeRiderName(riderName) {
   // Return the result
   return capitalizedWords;
 }
-
 
 function toggleExample(codeBlock) {
   codeBlock.classList.toggle("hidden");
