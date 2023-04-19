@@ -26,6 +26,7 @@ function getBicycleRacer() {
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = "Relative Strength: ";
       for (const strength of data.relativeStrength) {
+        console.log(strength);
         const strengthText = strength.type + (strength.score ? ` ${strength.score}` : '');
         const strengthElement = document.createElement("p");
         strengthElement.innerText = strengthText;
