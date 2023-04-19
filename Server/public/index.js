@@ -1,6 +1,10 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
+//import database modles 
+const BicycleRacer = require('../DataBase/Models/bicycleRacer');
+
+
 /* const scrapeRaceResults = (raceName, raceYear) => {
   const raceUrl = `https://www.procyclingstats.com/race/${raceName}/${raceYear}/results`;
 
@@ -84,57 +88,79 @@ axios
 // Call the function with the initial raceName and raceYear
 scrapeRaceResults("e3-harelbeke", "2023"); */
 
-const url = 'https://www.procyclingstats.com/rider/dmitriy-gruzdev';
-
-axios.get(url).then((response) => {
-  const html = response.data;
-  const $ = cheerio.load(html);
-const riderRelativeStrengthInfo = $('.left.w50.mb_w100');
-// Nationality
-const nationality = riderRelativeStrengthInfo.find('b:contains("Nationality:")').next().next().text().trim();
-// GC
-const gcRawScore = $('div.bg.red').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
-//round to two decimal places
-const gcRoundScore = parseFloat(gcRawScore).toFixed(2);
-// Time Trial
-const timeTrialRawScore = $('div.bg.blue').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
-const timeTrialRoundScore = parseFloat(timeTrialRawScore).toFixed(2);
-// Sprint
-const sprintRawScore = $('div.bg.orange').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
-const sprintRoundScore = parseFloat(sprintRawScore).toFixed(2);
-// Climber
-const climberRawScore = $('div.bg.purple').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
-const climberRoundScore = parseFloat(climberRawScore).toFixed(2);
-
-const riderInfo = $('.left.w50.mb_w100').text().trim();
-const dateOfBirthRegex = /Date of birth:\s*([\d]+(?:th|st|nd|rd)\s+\w+\s+\d{4})/;
-const weightRegex = /Weight:\s*([\d.]+)\s*kg/;
-const heightRegex = /Height:\s*([\d.]+)\s*m/;
-const ageRegex = /\((\d+)\)/;
-
-const dateOfBirthMatch = riderInfo.match(dateOfBirthRegex);
-const weightMatch = riderInfo.match(weightRegex);
-const heightMatch = riderInfo.match(heightRegex);
-const ageMatch = riderInfo.match(ageRegex);
-
-const dateOfBirth = dateOfBirthMatch ? dateOfBirthMatch[1] : null;
-const weight = weightMatch ? weightMatch[1] : null;
-const height = heightMatch ? heightMatch[1] : null;
-const age = ageMatch ? ageMatch[1] : null;
+async function getAllRiderNames() {
+  try {
+    const response = await fetch('https://cycling-databse.herokuapp.com/api/bicycle-racers');
+    const data = await response.json();
+    const riderNames = data.map((rider) => rider.riderName);
+    return riderNames;
+  } catch (error) {
+    console.log(error.message);
+    return [];
+  }
+}
 
 
+async function updateRiderMetaData(){
+  const riderNames = await getAllRiderNames();
+  for (const riderName of riderNames) {
+    const url = `https://www.procyclingstats.com/rider/${riderName}`;
+    try {
+      const response = await axios.get(url);
+      const html = response.data;
+      const $ = cheerio.load(html);
+      const riderRelativeStrengthInfo = $('.left.w50.mb_w100');
+      
+      // Extract key-value pairs
+      const nationality = riderRelativeStrengthInfo.find('b:contains("Nationality:")').next().next().text().trim();
+      const gcRawScore = $('div.bg.red').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      const gcRoundScore = gcRawScore ? parseFloat(gcRawScore).toFixed(2) : null;
+      const timeTrialRawScore = $('div.bg.blue').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      const timeTrialRoundScore = timeTrialRawScore ? parseFloat(timeTrialRawScore).toFixed(2) : null;
+      const sprintRawScore = $('div.bg.orange').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      const sprintRoundScore = sprintRawScore ? parseFloat(sprintRawScore).toFixed(2) : null;
+      const climberRawScore = $('div.bg.purple').attr('style').match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      const climberRoundScore =  climberRawScore ? parseFloat(climberRawScore).toFixed(2) : null;
+      
+      const riderInfo = $('.left.w50.mb_w100').text().trim();
+      const dateOfBirthRegex = /Date of birth:\s*([\d]+(?:th|st|nd|rd)\s+\w+\s+\d{4})/;
+      const weightRegex = /Weight:\s*([\d.]+)\s*kg/;
+      const heightRegex = /Height:\s*([\d.]+)\s*m/;
+      const ageRegex = /\((\d+)\)/;
+      
+      const dateOfBirthMatch = riderInfo.match(dateOfBirthRegex);
+      const weightMatch = riderInfo.match(weightRegex);
+      const heightMatch = riderInfo.match(heightRegex);
+      const ageMatch = riderInfo.match(ageRegex);
+      
+      const dateOfBirth = dateOfBirthMatch ? dateOfBirthMatch[1] : null;
+      const weight = weightMatch ? weightMatch[1] : null;
+      const height = heightMatch ? heightMatch[1] : null;
+      const age = ageMatch ? ageMatch[1] : null;
 
-// Log data fields
-console.log('Date of birth:', dateOfBirth);
-console.log('Nationality:', nationality);
-console.log('Age:', age);
-console.log('Weight:', weight, "kg");
-console.log('Height:', height, "m");
-console.log("GC:", gcRoundScore);
-console.log("Time Trial:",  timeTrialRoundScore);
-console.log("Sprint:",  sprintRoundScore);
-console.log("Climber:", climberRoundScore);
-  
-}).catch((error) => {
-  console.error(error);
-});
+      // Update the database
+      const rider = await BicycleRacer.findOne({ name: riderName });
+      if (rider) {
+        rider.nationality = nationality;
+        rider.gc = gcRoundScore;
+        rider.timeTrial = timeTrialRoundScore;
+        rider.sprint = sprintRoundScore;
+        rider.climber = climberRoundScore;
+        rider.dateOfBirth = dateOfBirth;
+        rider.weight = weight;
+        rider.height = height;
+        rider.age = age;
+        await rider.save();
+        console.log(`Updated ${riderName} in database.`);
+      } else {
+        console.error(`Rider with name ${riderName} not found in database.`);
+      }
+    } catch (error) {
+      console.error(error);
+      continue; // continue to next iteration of loop
+    }
+  }
+}
+
+
+updateRiderMetaData()
