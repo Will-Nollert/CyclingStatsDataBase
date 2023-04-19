@@ -14,10 +14,14 @@ function getBicycleRacer() {
       name.innerText = data.riderName;
       const age = document.createElement("p");
       age.innerText = `Age: ${data.age}`;
-      const team = document.createElement("p");
-      team.innerText = `Team: ${data.team}`;
       const nationality = document.createElement("p");
       nationality.innerText = `Nationality: ${data.nationality}`;
+      const weight = document.createElement("p");
+      weight.innerText = `Weight: ${data.weight}`;
+      const height = document.createElement("p");
+      height.innerText = `Height: ${data.height}`;
+      const relativeStrength = document.createElement("p");
+      relativeStrength.innerText = `Relative Strength: ${data.relativeStrength}`;
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(team);
