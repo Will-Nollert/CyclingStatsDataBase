@@ -1,164 +1,205 @@
 * {
-font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 body {
-    margin: 20px;
-    background-color: #f2f2f2; 
-  }
-  
-  form {
-    margin-bottom: 30px;
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 36px;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  label {
-    font-size: 18px;
-  }
-  
-  input {
-    font-size: 18px;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-  }
-  
-  button {
-    font-size: 18px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #3e8e41;
-  }
-  
-  #allBicycleRacers, #racesContainer, #bicycleRacer, #bicycleRacerRaceHistory, #rankedBicycleRacerRaceHistory {
-    margin-top: 10px;
-    font-size: 16px;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    white-space: pre-wrap;
-  }
-  
-  .card {
-    background-color: #f7f7f7;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-    padding: 16px;
-  }
-  
-  .card h2 {
-    font-size: 20px;
-    margin: 0 0 16px;
-  }
-  
-  .card p {
-    font-size: 16px;
-    margin: 0;
-  }
-  
-  .card .field {
-    margin-bottom: 8px;
-  }
-  
-  .card .field label {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
-  
-  .card .field input[type="text"],
-  .card .field input[type="number"] {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    padding: 8px;
-    width: 100%;
-  }
-  
-  
-  .card-header {
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #dddddd;
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  .card-body p {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  
-  .card-footer {
-    background-color: #f5f5f5;
-    border-top: 1px solid #dddddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  .input-message {
-    font-size: 14px;
-    color: #666;
-    margin-top: 5px;
-  }
-  
-  .example-button {
-    font-size: 16px;
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    color: #333;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    }
-    
-    .example-button:hover {
-    background-color: #e0e0e0;
-    }
+  margin: 20px;
+  background-color: #f2f2f2;
+}
 
-    .race-card {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-shadow: 2px 2px 5px #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-      background-color: #fff;
-      transition: all 0.3s ease;
-    }
-    
-    .race-card:hover {
-      box-shadow: 4px 4px 10px #ccc;
-    }
-    
+form {
+  margin-bottom: 30px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 18px;
+}
+
+input {
+  font-size: 18px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+#allBicycleRacers,
+#racesContainer,
+#bicycleRacer,
+#bicycleRacerRaceHistory,
+#rankedBicycleRacerRaceHistory {
+  margin-top: 10px;
+  font-size: 16px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  white-space: pre-wrap;
+}
+
+.card {
+  background-color: #f7f7f7;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+
+.card p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.card .field {
+  margin-bottom: 8px;
+}
+
+.card .field label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.card .field input[type="text"],
+.card .field input[type="number"] {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 8px;
+  width: 100%;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #dddddd;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-body p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.card-footer {
+  background-color: #f5f5f5;
+  border-top: 1px solid #dddddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+.input-message {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.example-button {
+  font-size: 16px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.example-button:hover {
+  background-color: #e0e0e0;
+}
+
+.race-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.race-card:hover {
+  box-shadow: 4px 4px 10px #ccc;
+}
+
+
+
+.racer-dropdown {
+  font-size: 16px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.races-dropdown {
+  font-size: 16px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+/* center the dropdown-btn */
+.dropdown-btn  {
+  display: block;
+  margin: 0 auto;
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-btn:hover {
+  background-color: #ff6659 ;
+}

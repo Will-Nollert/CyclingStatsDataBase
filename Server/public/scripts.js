@@ -1,5 +1,5 @@
-const raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
-const bicycleRacerRouteURLBase =
+let raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
+let bicycleRacerRouteURLBase =
   "https://cycling-databse.herokuapp.com/api/bicycle-racers";
 
 function getBicycleRacer() {
@@ -233,7 +233,10 @@ function toggleExample(codeBlock) {
 }
 
 function toggleElementVisibility(id) {
-  const element = document.getElementById(id);
-  element.classList.toggle("hidden");
+  var element = document.getElementById(id);
+  if (element.style.display === "none") {
+    element.style.display = "block";
+  } else {
+    element.style.display = "none";
+  }
 }
-
