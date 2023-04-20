@@ -15,8 +15,8 @@ app.use(express.static(path.join(__dirname, "public")));
 async function startServer() {
   try {
     connectDB();
-    app.listen(process.env.PORT || 80, () => {
-      console.log(`Server started on port ${process.env.PORT || 80}`);
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Server started on port ${process.env.PORT || 3000}`);
     });
   } catch (error) {
     console.log("MongoDB connection error: ", error);
@@ -38,3 +38,27 @@ app.use("/api/bicycle-racers", bicycleRacersRouter);
 
 
 
+async function updateRacesWithYear() {
+  const Race = require("./DataBase/Models/raceObject")
+
+  try {
+    const races = await Race.find({});
+
+    races.forEach(async (race) => {
+      const dateParts = race.date_.split('_');
+      const year = dateParts[2];
+
+      const updatedRace = await Race.findByIdAndUpdate(
+        race._id,
+        { $set: { year_: year } },
+        { new: true }
+      );
+
+      console.log(`Race ${updatedRace._id} updated successfully`);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+updateRacesWithYear();
