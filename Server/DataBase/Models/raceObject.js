@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const raceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   date_: { type: String, required: true },
+  year_: { type: String, required: true },
   start_time_: { type: String },
   avg_speed_winner_: { type: String },
   race_category_: { type: String },
