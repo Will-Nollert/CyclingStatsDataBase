@@ -36,29 +36,8 @@ app.options("/api/bicycle-racers", cors());
 app.use("/api/bicycle-racers", bicycleRacersRouter);
 
 
+const BicycleRacer = require("./DataBase/Models/bicycleRacer");
+const axios = require("axios");
+const cheerio = require("cheerio");
+//const fetch = require("node-fetch");
 
-
-async function updateRacesWithYear() {
-  const Race = require("./DataBase/Models/raceObject")
-
-  try {
-    const races = await Race.find({});
-
-    races.forEach(async (race) => {
-      const dateParts = race.date_.split('_');
-      const year = dateParts[2];
-
-      const updatedRace = await Race.findByIdAndUpdate(
-        race._id,
-        { $set: { year_: year } },
-        { new: true }
-      );
-
-      console.log(`Race ${updatedRace._id} updated successfully`);
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-updateRacesWithYear();

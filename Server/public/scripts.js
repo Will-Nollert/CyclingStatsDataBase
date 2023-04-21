@@ -1,6 +1,6 @@
-let raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
+let raceRouteURLBase = "http://localhost:3000/api/races";
 let bicycleRacerRouteURLBase =
-  "https://cycling-databse.herokuapp.com/api/bicycle-racers";
+  "http://localhost:3000/api/bicycle-racers";
 
 function getBicycleRacer() {
   const riderName = document
@@ -26,14 +26,24 @@ function getBicycleRacer() {
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = "Relative Strength: ";
       const relativeStrengthList = document.createElement("ul");
-     let riderRelativetrengthValues = data.relativeStrength[0];
-     for (const [key, value] of Object.entries(riderRelativetrengthValues)) {
-      if (key !== '_id') {
-        const strengthItem = document.createElement("li");
-        strengthItem.innerText = `${key}: ${value}`;
-        relativeStrengthList.appendChild(strengthItem);
-      }
-    }
+     let riderRelativetrengthValues = data.relativeStrength
+     const strengthValues = {};
+
+     // Loop through each object in the array
+     for (const obj of riderRelativetrengthValues) {
+       // Extract the type and score properties
+       const { type, score } = obj;
+       // Add the type and score to the strengthValues object
+       strengthValues[type] = score;
+     }
+     
+     // Convert the strengthValues object to a formatted string
+     const strengthString = Object.entries(strengthValues)
+       .map(([key, value]) => `${key}: ${value}`)
+       .join('\n');
+     
+     // Display the formatted string in the DOM
+     relativeStrengthList.innerText = strengthString;
     relativeStrength.appendChild(relativeStrengthList);
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
@@ -174,21 +184,14 @@ function getRankedBicycleRacerRaceHistory() {
     });
 }
 
-function getRaceByNameAndDate() {
-  let raceName = document.getElementById("raceName").value;
+function getRaceByNameAndYear() {
+  let raceName = document.getElementById("raceName2").value;
   raceName = raceName.toLowerCase().replace(/\s+/g, "-");
 
-  let date_ = document.getElementById("raceDate").value;
-  const regex = /(\d{4})-(\d{2})-(\d{2})/;
-  const [_, year, month, day] = date_.match(regex);
-const months = [
-  "January", "February", "March", "April", "May", "June", 
-  "July", "August", "September", "October", "November", "December"
-];
-const monthStr = months[parseInt(month) - 1];
-const output = `${day}_${monthStr}_${year}`;
-date_ = output
-  fetch(`${raceRouteURLBase}/${raceName}/${date_}`)
+  let year = document.getElementById("raceDate").value;
+  console.log(year);
+  console.log(raceName);
+  fetch(`${raceRouteURLBase}/${raceName}/${year}`)
     .then((response) => response.json())
     .then((data) => {
       const raceCard = document.createElement("div");
@@ -212,6 +215,7 @@ date_ = output
     })
     .catch((error) => console.log(error));
 }
+
 
 /*********************
  * UTILITY FUNCTIONS *

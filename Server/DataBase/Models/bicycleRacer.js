@@ -24,10 +24,10 @@ const mongoose = require("mongoose");
     relativeStrength: [{
       type: {
         type: String,
-        enum: ['gc', 'timeTrial', 'sprint', 'climber']
+        enum: ['gc', 'timeTrial', 'sprint', 'climber', 'oneDay']
       },
       score: {
-        type: Number
+        type: String
       }
     }],
     races: [{

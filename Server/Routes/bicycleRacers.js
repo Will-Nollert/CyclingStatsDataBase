@@ -102,4 +102,14 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  try {
+    const result = await BicycleRacer.deleteMany({});
+    res.json({ message: `${result.deletedCount} BicycleRacers deleted.` });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
 module.exports = router;

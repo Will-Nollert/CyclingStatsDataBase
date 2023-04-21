@@ -2,6 +2,7 @@ const BicycleRacer = require("./DataBase/Models/bicycleRacer");
 const RacerFinisher = require("./DataBase/Models/racerFinisherObject");
 
 
+
 // Function to update the BicycleRacer model with the races and positions for each racer
 async function updateBicycleRacers() {
   try {
@@ -92,7 +93,7 @@ async function removeSuperfluousFields() {
   }
 }
 //used to add DOB height and weight nationalities and relative strength for each rider to the DB
- async function updateRiderMetaData() {
+async function updateRiderMetaData() {
   const riderNames = await getAllRiderNames();
   for (const riderName of riderNames) {
     const url = `https://www.procyclingstats.com/rider/${riderName}`;
@@ -123,6 +124,12 @@ async function removeSuperfluousFields() {
       const sprintRawScore = $("div.bg.orange")
         .attr("style")
         .match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      // One day races
+      const oneDayRawScore = $("div.bg.green")
+        .attr("style")
+        .match(/width:\s*(\d+(\.\d+)?)%/)[1];
+      const oneDayRoundScore = parseFloat(oneDayRawScore).toFixed(2);
+
       const sprintRoundScore = parseFloat(sprintRawScore).toFixed(2);
       // Climber
       const climberRawScore = $("div.bg.purple")
@@ -154,10 +161,11 @@ async function removeSuperfluousFields() {
       console.log("Age:", age);
       console.log("Weight:", weight, "kg");
       console.log("Height:", height, "m");
-      console.log("GC:", gcRoundScore);
-      console.log("Time Trial:", timeTrialRoundScore);
-      console.log("Sprint:", sprintRoundScore);
-      console.log("Climber:", climberRoundScore);
+      console.log("GC:", gcRoundScore, typeof gcRoundScore);
+      console.log("One Day:", oneDayRoundScore, typeof oneDayRoundScore);
+      console.log("Time Trial:", timeTrialRoundScore, typeof timeTrialRoundScore);
+      console.log("Sprint:", sprintRoundScore, typeof sprintRoundScore);
+      console.log("Climber:", climberRoundScore, typeof climberRoundScore);
       console.log("--------------------")
 
       // Update the rider with the new metadata
@@ -169,10 +177,11 @@ async function removeSuperfluousFields() {
         weight,
         height,
         relativeStrength: [
-          gcRoundScore,
-          timeTrialRoundScore,
-          sprintRoundScore,
-          climberRoundScore
+          {type: 'gc', score: gcRoundScore},
+          {type: 'timeTrial', score: timeTrialRoundScore},
+          {type: 'sprint', score: sprintRoundScore},
+          {type: 'climber', score: climberRoundScore},
+          {type: 'oneDay', score: oneDayRoundScore} // add this line if needed
         ]
       };
       const options = { upsert: true };
@@ -198,5 +207,85 @@ async function getAllRiderNames() {
     return [];
   }
 }
+//used to add a date_ field to the raceObject document in the DB
+async function updateRacesWithYear() {
 
+  try {
+    const races = await Race.find({});
+
+    races.forEach(async (race) => {
+      const dateParts = race.date_.split('_');
+      const year = dateParts[2];
+
+      const updatedRace = await Race.findByIdAndUpdate(
+        race._id,
+        { $set: { year_: year } },
+        { new: true }
+      );
+
+      console.log(`Race ${updatedRace._id} updated successfully`);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+//used to update DB fields after i delte half of the names 
+async function updateRiderFinishers() {
+  try {
+    const riderNames = await getAllRiderNames();
+    const riderFinishers = await RacerFinisher.find();
+
+    for (const finisher of riderFinishers) {
+      const oldName = finisher.riderName;
+      console.log("OLD NAME =", oldName.replace(/-/g, "").toLowerCase())
+      console.log("NEW NAME =", riderNames[3].slice(0, -3).replace(/-/g, "").toLowerCase())
+
+      let newName = riderNames.find(
+        (name) =>
+          name.slice(0, -3).replace(/-/g, "").toLowerCase() === oldName.replace(/-/g, "").toLocaleLowerCase() ||
+          name.toLowerCase() === oldName.toLowerCase().split(" ").reverse().join(" ") 
+      );
+      if (newName) {
+        finisher.riderName = newName;
+        await finisher.save();
+        console.log(`Updated rider name from ${oldName} to ${newName}`);
+      } else {
+        console.log(`No matching name found for ${oldName.replace(/-/g, "").toLowerCase()}`);
+      }
+    }
+
+    console.log("Finished updating rider finishers");
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+//used to check name format
+async function logRiderNames() {
+  try {
+    const racerFinishers = await riderFinishers.find();
+    const riderNames = racerFinishers.map((finisher) => finisher.riderName);
+    console.log(riderNames.slice((-1000)));
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//util function to purge old DB of incorrect names
+async function deleteRacerFinishersWithCapitalLetters() {
+  try {
+    const racerFinishers = await RacerFinisher.find();
+
+    for (const finisher of racerFinishers) {
+      const riderName = finisher.riderName;
+      if (riderName.match(/[A-Z]/)) {
+        await finisher.delete();
+        console.log(`Deleted racerFinisher document with riderName ${riderName}`);
+      }
+    }
+
+    console.log("Finished deleting racerFinisher documents with capital letters");
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 

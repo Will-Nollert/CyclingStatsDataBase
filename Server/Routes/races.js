@@ -102,11 +102,11 @@ router.get("/", async (req, res) => {
 });
 
 // Get a specific race by name and date
-router.get("/:name/:date_", async (req, res) => {
+router.get("/:name/:year_", async (req, res) => {
   try {
     const race = await Race.findOne({
       name: req.params.name,
-      date_: req.params.date_,
+      year_: req.params.year_,
     }).populate({
       path: "finishers",
       select: "position riderName -_id",
@@ -208,5 +208,26 @@ router.delete("/:name/:date_", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+router.delete("/delete-all", async (req, res) => {
+  try {
+    await Race.deleteMany({});
+    res.status(200).json({ message: "All data deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.delete('/racerfinishers', async (req, res) => {
+  try {
+    await RacerFinisher.deleteMany({});
+    res.status(200).json({ message: 'All racer finishers deleted successfully.' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'An error occurred while deleting racer finishers.' });
+  }
+});
+
+
 
 module.exports = router;
