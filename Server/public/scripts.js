@@ -1,6 +1,6 @@
-let raceRouteURLBase = "http://localhost:3000/api/races";
+let raceRouteURLBase = "https://cycling-databse.herokuapp.com/api/races";
 let bicycleRacerRouteURLBase =
-  "http://localhost:3000/api/bicycle-racers";
+  "https://cycling-databse.herokuapp.com/api/bicycle-racers";
 
 function getBicycleRacer() {
   const riderName = document
