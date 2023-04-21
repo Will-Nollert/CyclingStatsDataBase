@@ -189,8 +189,6 @@ function getRaceByNameAndYear() {
   raceName = raceName.toLowerCase().replace(/\s+/g, "-");
 
   let year = document.getElementById("raceDate").value;
-  console.log(year);
-  console.log(raceName);
   fetch(`${raceRouteURLBase}/${raceName}/${year}`)
     .then((response) => response.json())
     .then((data) => {
