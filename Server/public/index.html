@@ -7,25 +7,44 @@
   </head>
 
   <body>
-    <h1>Welcome to My API Playground</h1>
-
+    <h1>Scraped PCS API v1</h1>
+    <h7>[ Base URL: https://cycling-databse.herokuapp.com/api ]</h7>
+   <div class="intro-card">
+    <p class="intro-text">
+      The PCS Playground is the easiest way to familiarize yourself with
+      the Scraped PCS API by submitting HTTP requests and observing the responses
+      before you write any client code. It will show what a response will look 
+      like with different endpoints depending on the values selected. To Check
+      out the soure code, click this <a href="https://github.com/Will-Nollert/CyclingStatsDataBase">
+        https://github.com/Will-Nollert/CyclingStatsDataBase</a>.
+        <br/>
+        <br/>
+        **Currently the database contains the following races from 1950-2022; e3-harelbeke, paris-roubaix,
+        strade-bianche-donne, milano-sanremo, gent-wevelgem, ronde-van-vlaanderen, amstel-gold-race
+        la-fleche-wallone, liege-bastogne-liege, san-sebastian, paris-tours, giro-dell-emilia, omloop-het-nieuwsblad
+        gp-d-ouverture, trofeo-laigueglia, trofeo-andratx-mirador-d-es-colomer, il-lombardia, and milano-torino. 
+        <br/>
+        <br />
+        Stage Races and Grand Tours comming soon! 
+    </p>
+  </div>
     <div class="racer-dropdown">
-      <button class="dropdown-btn" onclick="toggleElementVisibility('racer-dropdown-content')">Show/Hide Racer Routes</button>
-      <div id="racer-dropdown-content">
+      <button class="dropdown-btn" onclick="toggleElementVisibility('racer-dropdown-content')">Individual Racer Related Endpoints</button>
+      <div class="racer-dropdown-content" id="racer-dropdown-content" style="display: none;">
         <form>
-          <h2>Get  Racer Information</h2>
+          <h3>Get  Racer Information</h3>
           <hr />
           <button
             type="button"
             class="example-button"
-            onclick="toggleExample(document.getElementById('example4'))"
+            onclick="toggleExample(document.getElementById('example1'))"
           >
             Show Example
           </button>
-          <pre class="hidden" id="example4">
-        fetch('/api/bicycle-racers/{name}')
+          <pre class="hidden" id="example1">
+  fetch('/bicycle-racers/{name}')
         
-        Example Response: {
+  Example Response: {
           "riderName": "Wout Van Aert",
           "dateOfBirth": "2nd March 1998",
           "age": 25,
@@ -38,7 +57,6 @@
                   "timeTrial": 4.3,
                   "sprint": 100,
                   "climber": 33.77,
-                  "_id": "643f04fd62ca93665c252c6b"
               }
           ]
         }
@@ -57,6 +75,7 @@
           <button type="button" onclick="getBicycleRacer()">
             Get Racer Information
           </button>
+          <button type="button" onclick="deleteCard('bicycleRacer')">Delete Card</button>
           <button type="button" onclick="toggleElementVisibility('bicycleRacer')">Hide Data</button>
           <div id="bicycleRacer"></div>
           <br />
@@ -65,19 +84,18 @@
         </form>
         
         <form>
-        <h2>Get Race History Of One Racer</h2>
+        <h3>Get Race History Of One Racer</h3>
         <hr />
         <button
         type="button"
         class="example-button"
-        onclick="toggleExample(document.getElementById('example3'))"
-        >
+        onclick="toggleExample(document.getElementById('example2'))">
         Show Example
         </button>
-        <pre class="hidden" id="example3">
-        fetch('/api/bicycle-racers/{name}/history')
+        <pre class="hidden" id="example2">
+  fetch('/api/bicycle-racers/{name}/history')
         
-        Example Response: [
+  Example Response: [
         {
         "raceName": "paris-roubaix",
         "date": "09_April_2023",
@@ -104,25 +122,26 @@
         <button type="button" onclick="getBicycleRacerRaceHistory()">
         Get Race History
         </button>
+        <button type="button" onclick="deleteCard('bicycleRacerRaceHistory')">Delete Card</button>
         <button type="button" onclick="toggleElementVisibility('bicycleRacerRaceHistory')">Hide Data</button>
         <div id="bicycleRacerRaceHistory"></div>
         </span>
         </form>
         
         <form>
-        <h2>Get Race History Of One Racer Ranked By Position</h2>
+        <h3>Get Race History Of One Racer Ranked By Position</h3>
         <hr />
         <button
           type="button"
           class="example-button"
-          onclick="toggleExample(document.getElementById('example4'))"
+          onclick="toggleExample(document.getElementById('example3'))"
         >
           Show Example
         </button>
-        <pre class="hidden" id="example4">
-        fetch('/api/bicycle-racers/{name}/rankedHistory')
+        <pre class="hidden" id="example3">
+  fetch('/api/bicycle-racers/{name}/rankedHistory')
         
-        Example Response:  {
+  Example Response:  {
         "raceName": "paris-roubaix",
         "raceDate": "09_April_2023",
         "position": "1"
@@ -131,9 +150,10 @@
         "raceName": "amstel-gold-race",
         "raceDate": "21_April_2019",
         "position": "1"
-        }, etc...]
-        </pre
-        >
+        }, 
+        etc...
+        ]
+        </pre>
         <br />
         <label for="riderNameRankedHistory">Rider Name:</label>
         <input
@@ -148,6 +168,7 @@
         <button type="button" onclick="getRankedBicycleRacerRaceHistory()">
           Get Ranked Race History
         </button>
+        <button type="button" onclick="deleteCard('rankedBicycleRacerRaceHistory')">Delete Card</button>
         <button type="button" onclick="toggleElementVisibility('rankedBicycleRacerRaceHistory')">Hide Data</button>
         <div id="rankedBicycleRacerRaceHistory"></div>
         </span>
@@ -157,24 +178,24 @@
 
   
 
-<div class="races-dropdown">
-  <button class="dropdown-btn" onclick="toggleElementVisibility('races-dropdown-content')">Show/Hide Racer Routes</button>
-  <div id="races-dropdown-content">
+    <div class="racer-dropdown">
+      <button class="dropdown-btn" onclick="toggleElementVisibility('race-dropdown-content')">Individual Racer Related Endpoints</button>
+      <div id="race-dropdown-content" class="race-dropdown-content" style="display: none;">
     <form>
-      <h2>Get Every Race Instance by Name</h2>
+      <h3>Get Every Race Instance by Name</h3>
       <hr />
       <button
         type="button"
         class="example-button"
-        onclick="toggleExample(document.getElementById('example2'))"
+        onclick="toggleExample(document.getElementById('example4'))"
       >
         Show Example
       </button>
       <br />
-      <pre class="hidden" id="example2">
-fetch('/api/races/{name}')
+      <pre class="hidden" id="example4">
+  fetch('/api/races/{name}')
 
-Example Response:  {
+  Example Response:  {
           "_id": "643973fbfdb78b8dbe432fe2",
           "name": "paris-roubaix",
           "date_": "09_April_2023",
@@ -202,7 +223,7 @@ Example Response:  {
                   "position": "2",
                   "riderName": "PHILIPSEN Jasper"
               }, etc...]
-            }
+    }
       </pre>
       <label for="racesList">Race Name:</label>
       <input
@@ -213,15 +234,15 @@ Example Response:  {
       />
       <br />
       <span>
-      <button type="button" onclick="getRacesByName()">Get Races</button>
+        <button type="button" onclick="deleteCard('racesList')">Delete Card</button>
+        <button type="button" onclick="getRacesByName()">Get Races</button>
       <button type="button" onclick="toggleElementVisibility('racesList')">Hide Data</button>
-
       <div id="racesList"></div>
       </span>
     </form>
     <form>
       <hr />
-      <h2>Get One Race by Name and Date</h2>
+      <h3>Get One Race by Name and Date</h3>
       <button
         type="button"
         class="example-button"
@@ -230,9 +251,9 @@ Example Response:  {
         Show Example
       </button>
       <pre class="hidden" id="example5">
-    fetch('/api/races/{race_name}/{year_}')
+  fetch('/api/races/{race_name}/{year_}')
     
-    Example Response: {
+  Example Response: {
       "_id": "643973fbfdb78b8dbe432fe2",
       "name": "paris-roubaix",
       "date_": "09_April_2023",
@@ -260,7 +281,7 @@ Example Response:  {
               "position": "2",
               "riderName": "PHILIPSEN Jasper"
           }, etc...]
-        }
+    }
       </pre>
       <br />
       <label for="raceName">Name:</label>
@@ -350,6 +371,7 @@ Example Response:  {
       </select>
       <br />
       <span>
+        <button type="button" onclick="deleteCard('racesContainer')">Delete Card</button>
         <button type="button" onclick="getRaceByNameAndYear()">Get Race</button>
         <button type="button" onclick="toggleElementVisibility('racesContainer')">Hide Data</button>
         <div id="racesContainer"></div>
@@ -357,7 +379,7 @@ Example Response:  {
     </form>
     
     <form>
-      <h2>Get All Bicycle Races</h2>
+      <h3>Get All Bicycle Races</h3>
       <div class="input-message">
         Warning: This will return a large amount of data
       </div>
@@ -365,30 +387,31 @@ Example Response:  {
       <button
         type="button"
         class="example-button"
-        onclick="toggleExample(document.getElementById('example1'))"
+        onclick="toggleExample(document.getElementById('example6'))"
       >
         Show Example
       </button>
-      <pre class="hidden" id="example1">
+      <pre class="hidden" id="example6">
 fetch('/api/races')
 
 Exaple Response: [
 
-{ paris-roubaix
-  Date: 17_April_2022
-  Winner Avg Speed: 45_792_km/h},
-  
-{ paris-roubaix
- Date: 03_October_2021
-  Winner Avg Speed: 42_719_km/h},
-  etc...
-  
-  ]
+  { paris-roubaix
+    Date: 17_April_2022
+    Winner Avg Speed: 45_792_km/h},
+    
+  { paris-roubaix
+  Date: 03_October_2021
+    Winner Avg Speed: 42_719_km/h},
+    etc...
+    
+]
       </pre>
 <span>
       <button type="button" onclick="getAllBicycleRaces()">
         Get All Bicycle Races
       </button>
+      <button type="button" onclick="deleteCard('allBicycleRacers')">Delete Card</button>
       <button type="button" onclick="toggleElementVisibility('allBicycleRacers')">Hide Data</button>
       <div id="allBicycleRacers"></div>
 </span>

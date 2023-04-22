@@ -26,25 +26,23 @@ function getBicycleRacer() {
       const relativeStrength = document.createElement("p");
       relativeStrength.innerText = "Relative Strength: ";
       const relativeStrengthList = document.createElement("ul");
-     let riderRelativetrengthValues = data.relativeStrength
-     const strengthValues = {};
+      let riderRelativetrengthValues = data.relativeStrength;
+      const strengthValues = {};
+      // Loop through each object in the array
+      for (const obj of riderRelativetrengthValues) {
+        // Extract the type and score properties
+        const { type, score } = obj;
+        // Add the type and score to the strengthValues object
+        strengthValues[type] = score;
+      }
+      // Convert the strengthValues object to a formatted string
+      const strengthString = Object.entries(strengthValues)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join("\n");
 
-     // Loop through each object in the array
-     for (const obj of riderRelativetrengthValues) {
-       // Extract the type and score properties
-       const { type, score } = obj;
-       // Add the type and score to the strengthValues object
-       strengthValues[type] = score;
-     }
-     
-     // Convert the strengthValues object to a formatted string
-     const strengthString = Object.entries(strengthValues)
-       .map(([key, value]) => `${key}: ${value}`)
-       .join('\n');
-     
-     // Display the formatted string in the DOM
-     relativeStrengthList.innerText = strengthString;
-    relativeStrength.appendChild(relativeStrengthList);
+      // Display the formatted string in the DOM
+      relativeStrengthList.innerText = strengthString;
+      relativeStrength.appendChild(relativeStrengthList);
       bicycleRacer.appendChild(name);
       bicycleRacer.appendChild(age);
       bicycleRacer.appendChild(nationality);
@@ -53,7 +51,7 @@ function getBicycleRacer() {
       bicycleRacer.appendChild(relativeStrength);
     })
     //check if the bicycleRacer class is toggled on
-/*     .then(() => {
+    /*     .then(() => {
       if (bicycleRacer.classList.contains("hidden")) {
         bicycleRacer.classList.remove("hidden");
       }
@@ -214,6 +212,14 @@ function getRaceByNameAndYear() {
     .catch((error) => console.log(error));
 }
 
+function deleteCard(divId) {
+  const div = document.getElementById(divId);
+  while (div.firstChild) {
+    div.removeChild(div.firstChild);
+  }
+}
+
+
 
 /*********************
  * UTILITY FUNCTIONS *
@@ -238,18 +244,12 @@ function toggleExample(codeBlock) {
   codeBlock.classList.toggle("hidden");
 }
 
-function toggleElementVisibility(id) {
-  const element = document.getElementById(id);
-  element.classList.toggle("hidden");
-}
-
-// Get all dropdown buttons
-const dropdownBtns = document.querySelectorAll(".dropdown-btn");
-
 // Add click event listeners to all dropdown buttons
-dropdownBtns.forEach((dropdownBtn) => {
-  dropdownBtn.addEventListener("click", () => {
-    // Toggle the display of the dropdown content
-    dropdownBtn.nextElementSibling.classList.toggle("hidden");
-  });
-});
+function toggleElementVisibility(elementId) {
+  var element = document.getElementById(elementId);
+  if (element.style.display === "none") {
+    element.style.display = "block";
+  } else {
+    element.style.display = "none";
+  }
+}
