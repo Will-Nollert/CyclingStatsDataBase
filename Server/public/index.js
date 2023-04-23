@@ -1,8 +1,8 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-const scrapeRaceResults = (raceName, raceYear) => {
-  const raceUrl = `https://www.procyclingstats.com/race/${raceName}/${raceYear}/results`;
+const scrapeRaceResults = (raceName, raceYear, stage) => {
+  const raceUrl = `https://www.procyclingstats.com/race/tour-de-france/2022/stage-18`;
   axios
     .get(raceUrl)
     .then((response) => {
@@ -29,7 +29,7 @@ const scrapeRaceResults = (raceName, raceYear) => {
         race[key] = value;
       });
       //Add a key value pair to the race object of raceName
-      race = { name: raceName, ...race };
+      race = { name: raceName, stage: stage, ...race };
       //Get the race finishers  data
       const table = $("table.results > tbody");
       //create an array to hold the finishers
@@ -37,19 +37,23 @@ const scrapeRaceResults = (raceName, raceYear) => {
       //Scrape Data from the table
       table.find("tr").each((index, element) => {
         const position = $(element).find("td").eq(0).text().trim();
-        const riderName = $(element)
+        //get Rider Name for 1 day classics
+        /* const riderName = $(element)
           .find("td")
           .eq(3)
           .find("a")
           .first()
           .text()
-          .trim();
-        const teamName = $(element)
+          .trim(); */
+          //get Rider Name for Grand Tours
+          const riderName = $(element).find('a[href^="rider/"]').text().trim();
+          const teamName = $(element).find('a[href^="team/"]').text().trim();
+        /* const teamName = $(element)
           .find("td")
           .eq(3)
           .find(".showIfMobile")
           .text()
-          .trim();
+          .trim(); */
         const nameParts = riderName.split(" ");
         const lastName = nameParts
           .pop()
@@ -62,8 +66,9 @@ const scrapeRaceResults = (raceName, raceYear) => {
           //Add the finisher to the finishers array
         finishers.push({ position, riderName: formattedName, teamName });
       });
+      console.log(race, finishers)
       // Make the POST request to your backend API endpoint
-      fetch("http://localhost:3000/api/races/races-with-finishers", {
+    /*   fetch("http://localhost:3000/api/races/races-with-finishers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,14 +84,14 @@ const scrapeRaceResults = (raceName, raceYear) => {
           return response.json();
         }).catch((error) => {
           console.log(error);
-        })
+        }) 
         .then((data) => {
-          console.log(`Added ${raceName} ${raceYear} to the database`);
+          console.log(`Added ${raceName} ${raceYear} stage-${stage} to the database`);
           if (raceYear > 1950) {
             // Call the function recursively with a lower raceYear
-            scrapeRaceResults(raceName, raceYear - 1);
+            scrapeRaceResults(raceName, raceYear - 1, stage -1);
           }
-        })
+        }) */
     })
 };
 
@@ -111,10 +116,12 @@ const oneDayClassicRaces = ["e3-harelbeke",
   "milano-torino",
 ];
 
+const grandTours = ["tour-de-france"];
+
 // Call the function with the initial raceName and raceYear
-oneDayClassicRaces.forEach((raceName) => {
-  scrapeRaceResults(raceName, 2022);
+/* grandTours.forEach((raceName) => {
+  scrapeRaceResults(raceName, 2022, 21);
 });
+ */
 
-
-
+scrapeRaceResults();
