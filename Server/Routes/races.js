@@ -25,14 +25,11 @@ router.post("/", async (req, res) => {
 
 //Post a race object with race finishers array
 router.post("/races-with-finishers", jsonParser, async (req, res) => {
-  console.log(req.body);
   try {
     const { race, finishers } = req.body;
-
     // Save the race
     const newRace = new Race(race);
     const savedRace = await newRace.save();
-
     // Save the finishers
     const raceFinishers = [];
     for (let i = 0; i < finishers.length; i++) {

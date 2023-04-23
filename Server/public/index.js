@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 const scrapeRaceResults = (raceName, raceYear, stage) => {
-  const raceUrl = `https://www.procyclingstats.com/race/${raceName}/${raceYear}/stage-${stage}`;
+  const raceUrl =  `https://www.procyclingstats.com/race/${raceName}/${raceYear}/stage-${stage}`; 
   axios.get(raceUrl).then((response) => {
     const $ = cheerio.load(response.data);
     //Get the Race MetaData
@@ -31,7 +31,7 @@ const scrapeRaceResults = (raceName, raceYear, stage) => {
     //Get the race finishers  data
     const table = $("table.results > tbody");
     //create an array to hold the finishers
-    const finishers = [];
+    let finishers = [];
     //Scrape Data from the table
     table.find("tr").each((index, element) => {
       const position = $(element).find("td").eq(0).text().trim();
@@ -64,17 +64,14 @@ const scrapeRaceResults = (raceName, raceYear, stage) => {
       //Add the finisher to the finishers array
       finishers.push({ position, riderName: formattedName, teamName });
     });
-    console.log(`Added ${raceName} ${raceYear} stage-${stage} to the database`);
-    if (stage >= 2) {
-      // Call the function recursively with a lower raceYear
-      scrapeRaceResults(raceName, raceYear, stage - 1);
-    }
-    if (stage === 1 && raceYear > 1950) {
-      // Call the function recursively with a lower raceYear
-      scrapeRaceResults(raceName, raceYear - 1, 21);
-    }
+    const uniqueFinishers =  removeDuplicates(finishers);
+    finishers = uniqueFinishers;
+    //console.log(`Added ${raceName} ${raceYear} stage-${stage} to the database`);
+    
+
     // Make the POST request to your backend API endpoint
-    /*   fetch("http://localhost:3000/api/races/races-with-finishers", {
+    
+       fetch("http://localhost:3000/api/races/races-with-finishers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,13 +90,42 @@ const scrapeRaceResults = (raceName, raceYear, stage) => {
         }) 
         .then((data) => {
           console.log(`Added ${raceName} ${raceYear} stage-${stage} to the database`);
-          if (raceYear > 1950) {
-            // Call the function recursively with a lower raceYear
-            scrapeRaceResults(raceName, raceYear - 1, stage -1);
-          }
-        }) */
+               if (stage >= 2) {
+      // Call the function recursively with a lower raceYear
+      scrapeRaceResults(raceName, raceYear, stage - 1);
+    }
+    if (stage === 1 && raceYear > 1950) {
+      // Call the function recursively with a lower raceYear
+      scrapeRaceResults(raceName, raceYear - 1, 21);
+    }   
+        })  
   });
 };
+
+//util function to help parse HTLM for stage races
+//finishes table is not the same as 1 day classics
+//and this was late and super hacky <3
+ function removeDuplicates(finishers) {
+  const uniqueFinishers = [];
+
+  finishers.forEach((finisher) => {
+    let isDuplicate = false;
+    for (let i = 0; i < uniqueFinishers.length; i++) {
+      if (uniqueFinishers[i].riderName === finisher.riderName) {
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    if (!isDuplicate && /[a-zA-Z]/.test(finisher.riderName)) {
+      uniqueFinishers.push(finisher);
+    }
+  });
+
+  return uniqueFinishers;
+}
+
+
 
 //define an array of races names
 const oneDayClassicRaces = [
@@ -125,7 +151,9 @@ const oneDayClassicRaces = [
 
 const grandTours = ["tour-de-france", "giro-d-italia", "vuelta-a-espana"];
 
-// Call the function with the initial raceName and raceYear
-grandTours.forEach((raceName) => {
+//Call the function with the initial raceName and raceYear
+   grandTours.forEach((raceName) => {
   scrapeRaceResults(raceName, 2022, 21);
-});
+});  
+
+ 
