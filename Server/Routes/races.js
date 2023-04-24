@@ -8,12 +8,21 @@ const BicycleRacer = require("../DataBase/Models/bicycleRacer");
 // create application/json parser
 var jsonParser = bodyParser.json();
 
+//simple auth protection for delete route
+function protectRoute(req, res, next) {
+  const secretKey = req.header("X-Secret-Key");
+  if (secretKey === process.env.SECRET_KEY) {
+    return next();
+  }
+  res.status(401).send("Unauthorized");
+}
+
 /********************************************
  * ROUTES TO POST A RACE W/ & W/O FINISHERS *
  ********************************************/
 
 //Post a race object
-router.post("/", async (req, res) => {
+router.post("/", protectRoute, async (req, res) => {
   try {
     const race = new Race(req.body);
     const savedRace = await race.save();
@@ -24,36 +33,41 @@ router.post("/", async (req, res) => {
 });
 
 //Post a race object with race finishers array
-router.post("/races-with-finishers", jsonParser, async (req, res) => {
-  try {
-    const { race, finishers } = req.body;
-    // Save the race
-    const newRace = new Race(race);
-    const savedRace = await newRace.save();
-    // Save the finishers
-    const raceFinishers = [];
-    for (let i = 0; i < finishers.length; i++) {
-      const finisher = new RacerFinisher({
-        ...finishers[i],
-        race: savedRace._id,
-      });
-      const savedFinisher = await finisher.save();
-      raceFinishers.push(savedFinisher);
+router.post(
+  "/races-with-finishers",
+  protectRoute,
+  jsonParser,
+  async (req, res) => {
+    try {
+      const { race, finishers } = req.body;
+      // Save the race
+      const newRace = new Race(race);
+      const savedRace = await newRace.save();
+      // Save the finishers
+      const raceFinishers = [];
+      for (let i = 0; i < finishers.length; i++) {
+        const finisher = new RacerFinisher({
+          ...finishers[i],
+          race: savedRace._id,
+        });
+        const savedFinisher = await finisher.save();
+        raceFinishers.push(savedFinisher);
+      }
+
+      // Update the race with the finishers
+      savedRace.finishers = raceFinishers;
+      await savedRace.save();
+      savedRace.finishers = raceFinishers;
+
+      res.json(savedRace);
+    } catch (error) {
+      res.status(500).send(error.message);
     }
-
-    // Update the race with the finishers
-    savedRace.finishers = raceFinishers;
-    await savedRace.save();
-    savedRace.finishers = raceFinishers;
-
-    res.json(savedRace);
-  } catch (error) {
-    res.status(500).send(error.message);
   }
-});
+);
 
 // Post a racerFinisher to array for a specific race by name and date
-router.post("/:name/:date_/racerFinishers", async (req, res) => {
+router.post("/:name/:date_/racerFinishers", protectRoute, async (req, res) => {
   try {
     const racerFinisher = new RacerFinisher({
       ...req.body,
@@ -117,18 +131,17 @@ router.get("/:name/:year_", async (req, res) => {
   }
 });
 
-
 // Get all races with a specified name within a mandatory time frame
 router.get("/:name/from/:startYear/to/:endYear", async (req, res) => {
   try {
     const races = await Race.find({
       name: req.params.name,
-      year_: { $gte: req.params.startYear, $lte: req.params.endYear }
+      year_: { $gte: req.params.startYear, $lte: req.params.endYear },
     }).populate({
       path: "finishers",
       select: "position riderName -_id",
     });
-    
+
     if (races.length === 0) {
       return res.status(404).send("No races found");
     }
@@ -145,7 +158,7 @@ router.get("/:name/:year_/:stage_", async (req, res) => {
     const race = await Race.findOne({
       name: req.params.name,
       year_: req.params.year_,
-      stage_: req.params.stage_
+      stage_: req.params.stage_,
     }).populate({
       path: "finishers",
       select: "position riderName -_id",
@@ -159,11 +172,9 @@ router.get("/:name/:year_/:stage_", async (req, res) => {
   }
 });
 
-
-
 // Get EVERY race with a specified name BAD ROUTE TOO SLOW
-//NEEDS ATTENTION 
-router.get("/:name", async (req, res) => {
+//NEEDS ATTENTION
+router.get("/:name",protectRoute, async (req, res) => {
   try {
     const races = await Race.find({ name: req.params.name }).populate({
       path: "finishers",
@@ -177,9 +188,6 @@ router.get("/:name", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-
-
 
 /*******************************
  * ROUTES TO RANK RACE OBJECTS *
@@ -239,7 +247,7 @@ router.get("/rank-by-startlist-quality/:name", async (req, res) => {
  *****************/
 
 // Delete a specific race by name and date
-router.delete("/:name/:date_", async (req, res) => {
+router.delete("/:name/:date_", protectRoute, async (req, res) => {
   try {
     const race = await Race.findOneAndDelete({
       name: req.params.name,
@@ -254,7 +262,7 @@ router.delete("/:name/:date_", async (req, res) => {
   }
 });
 
-router.delete("/delete-all", async (req, res) => {
+router.delete("/delete-all", protectRoute, async (req, res) => {
   try {
     await Race.deleteMany({});
     res.status(200).json({ message: "All data deleted" });
@@ -263,16 +271,18 @@ router.delete("/delete-all", async (req, res) => {
   }
 });
 
-router.delete('/racerfinishers', async (req, res) => {
+router.delete("/racerfinishers", protectRoute, async (req, res) => {
   try {
     await RacerFinisher.deleteMany({});
-    res.status(200).json({ message: 'All racer finishers deleted successfully.' });
+    res
+      .status(200)
+      .json({ message: "All racer finishers deleted successfully." });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'An error occurred while deleting racer finishers.' });
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting racer finishers." });
   }
 });
-
-
 
 module.exports = router;
