@@ -44,14 +44,15 @@ router.get("/:riderName/history", async (req, res) => {
     });
 
     const raceHistory = races.map((race) => {
-      const position = bicycleRacer.races.find((r) =>
-        r.race.equals(race._id)
-      ).position;
-      return {
+      const raceObj = {
         raceName: race.name,
         date: race.date_,
-        position: position,
+        position: bicycleRacer.races.find((r) => r.race.equals(race._id)).position,
       };
+      if (race.stage_) {
+        raceObj.stage = race.stage_;
+      }
+      return raceObj;
     });
 
     res.json(raceHistory);
@@ -59,6 +60,7 @@ router.get("/:riderName/history", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
 
 //Rank ONE riders races by finish position
 router.get("/:riderName/rankedHistory", async (req, res) => {
