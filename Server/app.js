@@ -15,8 +15,8 @@ app.use(express.static(path.join(__dirname, "public")));
 async function startServer() {
   try {
     connectDB();
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server started on port ${process.env.PORT || 3000}`);
+    app.listen(process.env.PORT || 80, () => {
+      console.log(`Server started on port ${process.env.PORT || 80}`);
     });
   } catch (error) {
     console.log("MongoDB connection error: ", error);

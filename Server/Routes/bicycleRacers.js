@@ -82,6 +82,7 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
       ).position;
       return {
         raceName: race.name,
+        stage: race.stage_ || null,
         raceDate: race.date_,
         position: position,
       };
