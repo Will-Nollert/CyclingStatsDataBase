@@ -159,7 +159,7 @@ function getBicycleRacerRaceHistory() {
 }
 
 function getRankedBicycleRacerRaceHistory() {
-  let riderName = document.getElementById("riderNameRankedHistory").value;
+  let riderName = document.getElementById("riderNameRankedHistory").value
   riderName = riderName.toLowerCase().replace(/\s+/g, "-");
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/rankedHistory`)
     .then((response) => response.json())
@@ -186,7 +186,7 @@ function getRankedBicycleRacerRaceHistory() {
 }
 
 function getRaceByNameYearAndStage() {
-  const raceName = document.getElementById("raceName2").value;
+  const raceName = document.getElementById("raceName2").value.toLowerCase().replace(/\s+/g, "-");
   const year = document.getElementById("raceYear").value;
   const stage = document.getElementById("raceStage").value;
   fetch(`${raceRouteURLBase}/${raceName}/${year}/${stage}`)
@@ -215,6 +215,32 @@ function getRaceByNameYearAndStage() {
     .catch((error) => console.log(error));
 }
 
+async function rankRacesByVertMeters() {
+  const name = document.getElementById("nameInput").value.toLowerCase().replace(/\s+/g, "-");
+  const startYear = document.getElementById("startYearInput").value;
+  const endYear = document.getElementById("endYearInput").value;
+
+  const response = await fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/vert-meters`);
+  const races = await response.json();
+
+  if (response.ok) {
+    const raceList = document.createElement("ul");
+
+    races.forEach((race) => {
+      const raceItem = document.createElement("li");
+      raceItem.textContent = `${race.name} (${race.year_}): ${race.vert_meters_} vert meters`;
+      raceList.appendChild(raceItem);
+    });
+
+    const racesRankedByVertMeters = document.getElementById("racesRankedByVertMeters");
+    racesRankedByVertMeters.innerHTML = "";
+    racesRankedByVertMeters.appendChild(raceList);
+  } else {
+    alert(`Error: ${response.status} ${response.statusText}`);
+  }
+}
+
+
 
 function deleteCard(divId) {
   const div = document.getElementById(divId);
@@ -235,7 +261,6 @@ function racesRankedBySpeed() {
       return response.json();
     })
     .then((races) => {
-      console.log(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/winner-speed`)
       const racesRankedBySpeedDiv = document.getElementById("racesRankedBySpeed");
       racesRankedBySpeedDiv.innerHTML = `<h3>Races Ranked by Winner Speed (${startYear} - ${endYear})</h3>`;
       if (races.length === 0) {
