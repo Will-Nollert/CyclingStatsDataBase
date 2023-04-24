@@ -10,7 +10,7 @@ function getBicycleRacer() {
   const bicycleRacer = document.getElementById("bicycleRacer");
   bicycleRacer.innerHTML = "";
 
-  fetch(`${bicycleRacerRouteURLBase}/${riderName}`)
+  fetch(`${bicycleRacerRouteURLBase}/${riderName}/info`)
     .then((response) => response.json())
     .then((data) => {
       const name = document.createElement("h3");
