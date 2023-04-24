@@ -193,76 +193,89 @@ router.get("/:name", protectRoute, async (req, res) => {
  * ROUTES TO RANK RACE OBJECTS *
  *******************************/
 
-//Rank all instance of a race  by finisher speed
-router.get("/:name/ranked-by-speed", async (req, res) => {
-  try {
-    const races = await Race.find({ name: req.params.name })
-      .sort({ avg_speed_winner_: -1 })
-      .select("-finishers");
-    if (!races || races.length === 0) {
-      return res.status(404).send("No races found for this name");
+//Rank instance of a race by finisher speed from start year to end year
+router.get(
+  "/:name/from/:startYear/to/:endYear/rank-by/winner-speed",
+  async (req, res) => {
+    try {
+      const races = await Race.find({
+        name: req.params.name,
+        year_: { $gte: req.params.startYear, $lte: req.params.endYear },
+      })
+        .sort({ avg_speed_winner_: -1 })
+        .select("-finishers");
+
+      if (!races || races.length === 0) {
+        return res.status(404).send("No races found for this name");
+      }
+
+      res.json(races);
+    } catch (error) {
+      res.status(500).send(error.message);
     }
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
   }
-});
+);
 
-// Rank ALL races based on startlist quality score
-router.get("/rank-by-startlist-quality", async (req, res) => {
+
+//Rank all races of :name by vert meters from start year to end year
+router.get("/:name/from/:startYear/to/:endYear/rank-by/vert-meters", async (req, res) => {
   try {
-    const races = await Race.find().sort({ startlist_quality_score_: -1 });
+    const races = await Race.find({ 
+      name: req.params.name,
+      year_: { $gte: req.params.startYear, $lte: req.params.endYear },
+    }).sort({ vert_meters_: -1 });
+
+    if (races.length === 0) {
+      return res.status(404).send("No races found");
+    }
+
     res.json(races);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-//Rank all instances of a RACE  by vert meters
-router.get("/rank-by-vert-meters/:name", async (req, res) => {
-  try {
-    const races = await Race.find({ name: req.params.name }).sort({
-      vert_meters_: -1,
-    });
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
 
-// Rank races of a specific name based on startlist quality score
-router.get("/rank-by-startlist-quality/:name", async (req, res) => {
-  try {
-    const races = await Race.find({ name: req.params.name }).sort({
-      startlist_quality_score_: -1,
-    });
-    res.json(races);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-// Rank stages of a stage by vert_meters from most to least
-router.get("/rank-by/vert_meters/:name/:year_/", async (req, res) => {
+// Rank all races of :name by startlist quality score from start year to end year
+router.get("/:name/from/:startYear/to/:endYear/rank-by/startlist-quality", async (req, res) => {
   try {
     const races = await Race.find({
       name: req.params.name,
-      year_: req.params.year_,
-      stage_: { $exists: true } // only include races that have a value for the stage_ field
-    })
-      .populate({
-        path: "finishers",
-        select: "position riderName -_id",
-      })
-      .sort({ vert_meters: -1 }); // sort by vert_meters in descending order
-    if (!races.length) {
-      return res.status(404).send("Races not found");
+      year_: { $gte: req.params.startYear, $lte: req.params.endYear },
+    }).sort({ startlist_quality_score_: -1 });
+
+    if (races.length === 0) {
+      return res.status(404).send("No races found");
     }
+
     res.json(races);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
+//Rank all races of a :name by start time  from start year to end year
+router.get("/:name/from/:startYear/to/:endYear/rank-by/start-time", async (req, res) => {
+  try {
+    const races = await Race.find({
+      name: req.params.name,
+      year_: { $gte: req.params.startYear, $lte: req.params.endYear },
+    }).sort({
+      start_time_: 1,
+    });
+
+    if (races.length === 0) {
+      return res.status(404).send("No races found");
+    }
+
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+
 
 
 
