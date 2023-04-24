@@ -84,14 +84,16 @@ function getAllBicycleRaces() {
     });
 }
 function getRacesByName() {
-  let raceName = document.getElementById("raceName").value;
-  raceName = raceName.toLowerCase().replace(/\s+/g, "-");
-  fetch(`${raceRouteURLBase}/${raceName}`)
+  const raceName = document.getElementById("raceName").value.toLowerCase().replace(/\s+/g, "-");
+  const startYear = document.getElementById("startYear").value;
+  const endYear = document.getElementById("endYear").value;
+
+  fetch(`${raceRouteURLBase}/${raceName}/from/${startYear}/to/${endYear}`)
     .then((response) => response.json())
     .then((data) => {
       const racesList = document.getElementById("racesList");
       racesList.innerHTML = ""; // clear previous results
-      const races = data.slice(0, 10); // get first 10 races
+      const races = data
       for (let race of races) {
         // create a new card for each race
         const card = document.createElement("div");
@@ -127,6 +129,7 @@ function getRacesByName() {
     })
     .catch((error) => console.error(error));
 }
+
 
 function getBicycleRacerRaceHistory() {
   let riderName = document.getElementById("riderNameHistory").value;
@@ -185,11 +188,12 @@ function getRankedBicycleRacerRaceHistory() {
 function getRaceByNameAndYear() {
   let raceName = document.getElementById("raceName2").value;
   raceName = raceName.toLowerCase().replace(/\s+/g, "-");
-
   let year = document.getElementById("raceDate").value;
   fetch(`${raceRouteURLBase}/${raceName}/${year}`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
+
       const raceCard = document.createElement("div");
       raceCard.classList.add("card");
       raceCard.innerHTML = `

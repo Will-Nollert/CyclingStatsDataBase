@@ -182,65 +182,72 @@
     <div class="racer-dropdown">
       <button class="dropdown-btn" onclick="toggleElementVisibility('race-dropdown-content')">Individual Race Related Endpoints</button>
       <div id="race-dropdown-content" class="race-dropdown-content" style="display: none;">
-    <form>
-      <h3>Get Every Race Instance by Name</h3>
-      <hr />
-      <button
-        type="button"
-        class="example-button"
-        onclick="toggleExample(document.getElementById('example4'))"
-      >
-        Show Example
-      </button>
-      <br />
-      <pre class="hidden" id="example4">
-  fetch('/api/races/{name}')
-
-  Example Response:  {
-          "_id": "643973fbfdb78b8dbe432fe2",
-          "name": "paris-roubaix",
-          "date_": "09_April_2023",
-          "start_time_": "11:25",
-          "avg_speed_winner_": "46_841_km/h",
-          "race_category_": "ME_-_Men_Elite",
-          "distance_": "256_6_km",
-          "points_scale_": "1_WT_A",
-          "uci_scale_": "UCI_WR_Monument",
-          "parcours_type_": "",
-          "profilescore_": "4",
-          "vert_meters_": "1380",
-          "departure_": "Compiègne",
-          "arrival_": "Roubaix",
-          "race_ranking_": "20",
-          "startlist_quality_score_": "775",
-          "won_how_": "15_1_km_solo",
-          "avg_temperature_": "16_°C",
-          "finishers": [
+        <form>
+          <h3>Get Every Race Instance by Name For a Year Range</h3>
+          <hr />
+          <button
+            type="button"
+            class="example-button"
+            onclick="toggleExample(document.getElementById('example4'))"
+          >
+            Show Example
+          </button>
+          <br />
+          <pre class="hidden" id="example4">
+        fetch('/api/races/:name/from/:startYear/to/:endYear')
+        
+        Example Response: [
+          {
+            "_id": "643973fbfdb78b8dbe432fe2",
+            "name": "paris-roubaix",
+            "year_": "2023",
+            "start_time_": "11:25",
+            "avg_speed_winner_": "46_841_km/h",
+            "race_category_": "ME_-_Men_Elite",
+            "distance_": "256_6_km",
+            "points_scale_": "1_WT_A",
+            "uci_scale_": "UCI_WR_Monument",
+            "parcours_type_": "",
+            "profilescore_": "4",
+            "vert_meters_": "1380",
+            "departure_": "Compiègne",
+            "arrival_": "Roubaix",
+            "race_ranking_": "20",
+            "startlist_quality_score_": "775",
+            "won_how_": "15_1_km_solo",
+            "avg_temperature_": "16_°C",
+            "finishers": [
               {
-                  "position": "1",
-                  "riderName": "VAN DER POEL Mathieu"
+                "position": "1",
+                "riderName": "VAN DER POEL Mathieu"
               },
               {
-                  "position": "2",
-                  "riderName": "PHILIPSEN Jasper"
-              }, etc...]
-    }
-      </pre>
-      <label for="racesList">Race Name:</label>
-      <input
-        type="text"
-        id="raceName"
-        name="raceName"
-        placeholder="Paris Roubaix"
-      />
-      <br />
-      <span>
-        <button type="button" onclick="deleteCard('racesList')">Delete Card</button>
-        <button type="button" onclick="getRacesByName()">Get Races</button>
-      <button type="button" onclick="toggleElementVisibility('racesList')">Hide Data</button>
-      <div id="racesList"></div>
-      </span>
-    </form>
+                "position": "2",
+                "riderName": "PHILIPSEN Jasper"
+              },
+              ...
+            ]
+          },
+          ...
+        ]
+          </pre>
+          <label for="raceName">Race Name:</label>
+          <input type="text" id="raceName" name="raceName" placeholder="Paris Roubaix" />
+          <br />
+          <label for="startYear">Start Year:</label>
+          <input type="number" id="startYear" name="startYear" placeholder="2022" />
+          <br />
+          <label for="endYear">End Year:</label>
+          <input type="number" id="endYear" name="endYear" placeholder="2023" />
+          <br />
+          <span>
+            <button type="button" onclick="deleteCard('racesList')">Delete Card</button>
+            <button type="button" onclick="getRacesByName()">Get Races</button>
+            <button type="button" onclick="toggleElementVisibility('racesList')">Hide Data</button>
+          </span>
+          <div id="racesList"></div>
+        </form>
+        
     <form>
       <hr />
       <h3>Get One Race by Name and Year</h3>
