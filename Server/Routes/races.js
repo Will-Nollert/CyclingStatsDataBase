@@ -76,7 +76,7 @@ router.get("/:id/finishers", async (req, res) => {
   try {
     const race = await Race.findById(req.params.id).populate("finishers");
     if (!race) {
-      return res.status(404).send("Race not found");
+      return res.status(404).send("Race not found for /:id/finishers");
     }
     res.json(race.finishers);
   } catch (error) {
@@ -117,6 +117,28 @@ router.get("/:name/:year_", async (req, res) => {
   }
 });
 
+
+// Get all races with a specified name within a mandatory time frame
+router.get("/:name/from/:startYear/to/:endYear", async (req, res) => {
+  try {
+    const races = await Race.find({
+      name: req.params.name,
+      year_: { $gte: req.params.startYear, $lte: req.params.endYear }
+    }).populate({
+      path: "finishers",
+      select: "position riderName -_id",
+    });
+    
+    if (races.length === 0) {
+      return res.status(404).send("No races found");
+    }
+
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 // Get a specific race by name, year and stage
 router.get("/:name/:year_/:stage_", async (req, res) => {
   try {
@@ -129,7 +151,7 @@ router.get("/:name/:year_/:stage_", async (req, res) => {
       select: "position riderName -_id",
     });
     if (!race) {
-      return res.status(404).send("Race not found");
+      return res.status(404).send("Race not found for /:name/:year_/:stage_");
     }
     res.json(race);
   } catch (error) {
@@ -139,7 +161,7 @@ router.get("/:name/:year_/:stage_", async (req, res) => {
 
 
 
-// Get EVERY race with a specified name
+// Get EVERY race with a specified name BAD ROUTE TOO SLOW
 router.get("/:name", async (req, res) => {
   try {
     const races = await Race.find({ name: req.params.name }).populate({
@@ -154,6 +176,9 @@ router.get("/:name", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+
+
 
 /*******************************
  * ROUTES TO RANK RACE OBJECTS *
