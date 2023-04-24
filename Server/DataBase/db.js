@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const DB_URI = process.env.MONGODB_URI;
+const DB_URIdev = process.env.MONGODB_URIdev;
 const seedData = require("./Models/seeds");
 
 /************************
@@ -8,7 +8,7 @@ const seedData = require("./Models/seeds");
  ************************/
 const connectDB = async () => {
   try {
-    mongoose.connect(DB_URI, {
+    mongoose.connect(DB_URIdev, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       keepAlive: true,

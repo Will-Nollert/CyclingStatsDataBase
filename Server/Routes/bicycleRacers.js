@@ -2,6 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Race = require("../DataBase/Models/raceObject");
 const BicycleRacer = require("../DataBase/Models/bicycleRacer");
+require("dotenv").config();
+
+//simple auth protection for delete route
+function protectRoute(req, res, next) {
+  const secretKey = req.header("X-Secret-Key");
+  if (secretKey === process.env.SECRET_KEY) {
+    return next();
+  }
+  res.status(401).send("Unauthorized");
+}
 
 //Get Some BicycleRacers with RaceID and Position by count 
 router.get("/:count", async (req, res) => {
@@ -109,14 +119,20 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+//Delete a BicycleRacer by name 
+router.delete("/:name", protectRoute, async (req, res) => {
   try {
-    const result = await BicycleRacer.deleteMany({});
-    res.json({ message: `${result.deletedCount} BicycleRacers deleted.` });
+    const result = await BicycleRacer.deleteOne({ riderName: req.params.name });
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: `BicycleRacer ${req.params.name} not found.` });
+    } else {
+      res.json({ message: `${req.params.name} has been deleted.` });
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
 
 
 module.exports = router;
