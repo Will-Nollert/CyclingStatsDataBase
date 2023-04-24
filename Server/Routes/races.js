@@ -98,12 +98,32 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a specific race by name and date
+// Get races by name and year
 router.get("/:name/:year_", async (req, res) => {
+  try {
+    const races = await Race.find({
+      name: req.params.name,
+      year_: req.params.year_,
+    }).populate({
+      path: "finishers",
+      select: "position riderName -_id",
+    });
+    if (!races.length) {
+      return res.status(404).send("Races not found");
+    }
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Get a specific race by name, year and stage
+router.get("/:name/:year_/:stage_", async (req, res) => {
   try {
     const race = await Race.findOne({
       name: req.params.name,
       year_: req.params.year_,
+      stage_: req.params.stage_
     }).populate({
       path: "finishers",
       select: "position riderName -_id",
@@ -116,6 +136,8 @@ router.get("/:name/:year_", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+
 
 // Get EVERY race with a specified name
 router.get("/:name", async (req, res) => {

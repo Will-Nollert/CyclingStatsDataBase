@@ -35,10 +35,10 @@ const bicycleRacersRouter = require("./Routes/bicycleRacers");
 app.options("/api/bicycle-racers", cors());
 app.use("/api/bicycle-racers", bicycleRacersRouter);
 
+const Race = require("./DataBase/Models/raceObject");
 const RacerFinisher = require("./DataBase/Models/racerFinisherObject");
 const BicycleRacer = require("./DataBase/Models/bicycleRacer");
 const axios = require("axios");
 const cheerio = require("cheerio");
 //const fetch = require("node-fetch");
-
 
