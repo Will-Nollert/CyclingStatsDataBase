@@ -242,6 +242,31 @@ router.get("/rank-by-startlist-quality/:name", async (req, res) => {
   }
 });
 
+// Rank stages of a stage by vert_meters from most to least
+router.get("/rank-by/vert_meters/:name/:year_/", async (req, res) => {
+  try {
+    const races = await Race.find({
+      name: req.params.name,
+      year_: req.params.year_,
+      stage_: { $exists: true } // only include races that have a value for the stage_ field
+    })
+      .populate({
+        path: "finishers",
+        select: "position riderName -_id",
+      })
+      .sort({ vert_meters: -1 }); // sort by vert_meters in descending order
+    if (!races.length) {
+      return res.status(404).send("Races not found");
+    }
+    res.json(races);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+
+
 /*****************
  * DELETE ROUTES *
  *****************/

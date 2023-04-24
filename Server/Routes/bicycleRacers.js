@@ -29,22 +29,18 @@ router.get("/:riderName/info", async (req, res) => {
   }
 });
 
-
-//Get Some BicycleRacers with RaceID and Position by count 
+//Get Some BicycleRacers with RaceID and Position by count
 router.get("/:count", async (req, res) => {
   try {
     const count = parseInt(req.params.count);
     const bicycleRacers = await BicycleRacer.aggregate([
-      { $sample: { size: count } }
+      { $sample: { size: count } },
     ]);
     res.json(bicycleRacers);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
-
-
-
 
 //Get A specific BicycleRacer with race history
 router.get("/:riderName/history", async (req, res) => {
@@ -64,7 +60,8 @@ router.get("/:riderName/history", async (req, res) => {
       const raceObj = {
         raceName: race.name,
         date: race.date_,
-        position: bicycleRacer.races.find((r) => r.race.equals(race._id)).position,
+        position: bicycleRacer.races.find((r) => r.race.equals(race._id))
+          .position,
       };
       if (race.stage_) {
         raceObj.stage = race.stage_;
@@ -77,7 +74,6 @@ router.get("/:riderName/history", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
 
 //Rank ONE riders races by finish position
 router.get("/:riderName/rankedHistory", async (req, res) => {
@@ -107,9 +103,9 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
 
     const rankedHistory = raceHistory.sort((a, b) => {
       // check if a or b is DNF, OTL, or DNS
-      if (['DNF', 'OTL', 'DNS'].includes(a.position)) {
+      if (["DNF", "OTL", "DNS"].includes(a.position)) {
         return 1; // move a to the bottom
-      } else if (['DNF', 'OTL', 'DNS'].includes(b.position)) {
+      } else if (["DNF", "OTL", "DNS"].includes(b.position)) {
         return -1; // move b to the bottom
       } else {
         return parseInt(a.position) - parseInt(b.position); // sort by integer value
@@ -122,12 +118,14 @@ router.get("/:riderName/rankedHistory", async (req, res) => {
   }
 });
 
-//Delete a BicycleRacer by name 
+//Delete a BicycleRacer by name
 router.delete("/:name", protectRoute, async (req, res) => {
   try {
     const result = await BicycleRacer.deleteOne({ riderName: req.params.name });
     if (result.deletedCount === 0) {
-      res.status(404).json({ message: `BicycleRacer ${req.params.name} not found.` });
+      res
+        .status(404)
+        .json({ message: `BicycleRacer ${req.params.name} not found.` });
     } else {
       res.json({ message: `${req.params.name} has been deleted.` });
     }
@@ -135,7 +133,5 @@ router.delete("/:name", protectRoute, async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-
 
 module.exports = router;
