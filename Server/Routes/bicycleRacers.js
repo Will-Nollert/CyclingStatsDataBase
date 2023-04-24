@@ -13,6 +13,23 @@ function protectRoute(req, res, next) {
   res.status(401).send("Unauthorized");
 }
 
+//Route to get a rider by name
+router.get("/:riderName/info", async (req, res) => {
+  try {
+    const bicycleRacer = await BicycleRacer.findOne({
+      riderName: req.params.riderName,
+    });
+    if (!bicycleRacer) {
+      return res.status(404).send("Bicycle racer not found");
+    }
+    console.log(req.params.riderName);
+    res.json(bicycleRacer);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
 //Get Some BicycleRacers with RaceID and Position by count 
 router.get("/:count", async (req, res) => {
   try {
@@ -27,20 +44,6 @@ router.get("/:count", async (req, res) => {
 });
 
 
-//Route to get a rider by name
-router.get("/:riderName", async (req, res) => {
-  try {
-    const bicycleRacer = await BicycleRacer.findOne({
-      riderName: req.params.riderName,
-    });
-    if (!bicycleRacer) {
-      return res.status(404).send("Bicycle racer not found");
-    }
-    res.json(bicycleRacer);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
 
 
 //Get A specific BicycleRacer with race history
