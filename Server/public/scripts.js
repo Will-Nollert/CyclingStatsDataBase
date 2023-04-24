@@ -50,14 +50,12 @@ function getBicycleRacer() {
       bicycleRacer.appendChild(height);
       bicycleRacer.appendChild(relativeStrength);
     })
-    //check if the bicycleRacer class is toggled on
-    /*     .then(() => {
-      if (bicycleRacer.classList.contains("hidden")) {
-        bicycleRacer.classList.remove("hidden");
-      }
-    }) */
     .catch((error) => {
       console.error("Error fetching bicycle racer: ", error);
+      const errorMessage =(`Rider ${riderName} was not found`)
+      showModal(errorMessage);
+      
+ 
     });
 }
 
@@ -128,41 +126,61 @@ function getRacesByName() {
       }
     })
     .catch((error) => console.error(error));
+    const errorMessage = "An error occurred while fetching the racer's race history.";
+    showModal(errorMessage);
+    
 }
 
 
 function getBicycleRacerRaceHistory() {
-  let riderName = document.getElementById("riderNameHistory").value;
-  riderName = riderName.toLowerCase().replace(/\s+/g, "-");
-  fetch(`${bicycleRacerRouteURLBase}/${riderName}/history`)
-    .then((response) => response.json())
-    .then((data) => {
-      const bicycleRacerRaceHistory = document.getElementById(
-        "bicycleRacerRaceHistory"
-      );
-      bicycleRacerRaceHistory.innerHTML = "";
-      data.forEach((race) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-        const raceName = document.createElement("h3");
-        raceName.innerText = race.raceName;
-        const raceDate = document.createElement("p");
-        raceDate.innerText = race.date;
-        const raceResult = document.createElement("p");
-        raceResult.innerText = race.position;
-        card.appendChild(raceName);
-        card.appendChild(raceDate);
-        card.appendChild(raceResult);
-        bicycleRacerRaceHistory.appendChild(card);
+  try {
+    let riderName = document.getElementById("riderNameHistory").value;
+    riderName = riderName.toLowerCase().replace(/\s+/g, "-");
+    fetch(`${bicycleRacerRouteURLBase}/${riderName}/history`)
+      .then((response) => response.json())
+      .then((data) => {
+        const bicycleRacerRaceHistory = document.getElementById(
+          "bicycleRacerRaceHistory"
+        );
+        bicycleRacerRaceHistory.innerHTML = "";
+        data.forEach((race) => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+          const raceName = document.createElement("h3");
+          raceName.innerText = race.raceName;
+          const raceDate = document.createElement("p");
+          raceDate.innerText = race.date;
+          const raceResult = document.createElement("p");
+          raceResult.innerText = race.position;
+          card.appendChild(raceName);
+          card.appendChild(raceDate);
+          card.appendChild(raceResult);
+          bicycleRacerRaceHistory.appendChild(card);
+        });
+      })
+      .catch((error) => {
+        const errorMessage = "An error occurred while fetching the racer's race history.";
+        showModal(errorMessage);
+        console.error(error);
       });
-    });
+  } catch (error) {
+    const errorMessage = "An error occurred while processing the request.";
+    showModal(errorMessage);
+    console.error(error);
+  }
 }
 
+
 function getRankedBicycleRacerRaceHistory() {
-  let riderName = document.getElementById("riderNameRankedHistory").value
+  let riderName = document.getElementById("riderNameRankedHistory").value;
   riderName = riderName.toLowerCase().replace(/\s+/g, "-");
   fetch(`${bicycleRacerRouteURLBase}/${riderName}/rankedHistory`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
     .then((data) => {
       const rankedBicycleRacerRaceHistory = document.getElementById(
         "rankedBicycleRacerRaceHistory"
@@ -182,8 +200,14 @@ function getRankedBicycleRacerRaceHistory() {
         card.appendChild(raceResult);
         rankedBicycleRacerRaceHistory.appendChild(card);
       });
+    })
+    .catch((error) => {
+      const errorMessage = "An error occurred while processing the request.";
+      showModal(errorMessage);
+      console.error(error);
     });
 }
+
 
 function getRaceByNameYearAndStage() {
   const raceName = document.getElementById("raceName2").value.toLowerCase().replace(/\s+/g, "-");
@@ -213,41 +237,46 @@ function getRaceByNameYearAndStage() {
       racesContainer.appendChild(raceCard);
     })
     .catch((error) => console.log(error));
+    const errorMessage = "An error occurred while processing the request.";
+    showModal(errorMessage);
+    console.error(error);
 }
 
 async function rankRacesByVertMeters() {
-  const name = document.getElementById("nameInput").value.toLowerCase().replace(/\s+/g, "-");
-  const startYear = document.getElementById("startYearInput").value;
-  const endYear = document.getElementById("endYearInput").value;
+  try {
+    const name = document.getElementById("nameInput").value.toLowerCase().replace(/\s+/g, "-");
+    const startYear = document.getElementById("startYearInput").value;
+    const endYear = document.getElementById("endYearInput").value;
 
-  const response = await fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/vert-meters`);
-  const races = await response.json();
+    const response = await fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/vert-meters`);
+    const races = await response.json();
 
-  if (response.ok) {
-    const raceList = document.createElement("ul");
+    if (response.ok) {
+      const raceList = document.createElement("ul");
 
-    races.forEach((race) => {
-      const raceItem = document.createElement("li");
-      raceItem.textContent = `${race.name} (${race.year_}): ${race.vert_meters_} vert meters`;
-      raceList.appendChild(raceItem);
-    });
+      races.forEach((race) => {
+        const raceItem = document.createElement("li");
+        raceItem.textContent = `${race.name} (${race.year_}): ${race.vert_meters_} vert meters`;
+        raceList.appendChild(raceItem);
+      });
 
-    const racesRankedByVertMeters = document.getElementById("racesRankedByVertMeters");
-    racesRankedByVertMeters.innerHTML = "";
-    racesRankedByVertMeters.appendChild(raceList);
-  } else {
-    alert(`Error: ${response.status} ${response.statusText}`);
+      const racesRankedByVertMeters = document.getElementById("racesRankedByVertMeters");
+      racesRankedByVertMeters.innerHTML = "";
+      racesRankedByVertMeters.appendChild(raceList);
+    } else {
+      const errorMessage = "An error occurred while processing the request.";
+      showModal(errorMessage);
+    }
+  } catch (error) {
+    const errorMessage = "An error occurred while processing the request.";
+    showModal(errorMessage);
+    console.error(error);
   }
 }
 
 
 
-function deleteCard(divId) {
-  const div = document.getElementById(divId);
-  while (div.firstChild) {
-    div.removeChild(div.firstChild);
-  }
-}
+
 
 function racesRankedBySpeed() {
   const name = document.getElementById("raceName").value.toLowerCase().replace(/\s+/g, "-");
@@ -291,8 +320,9 @@ function racesRankedBySpeed() {
       racesRankedBySpeedDiv.appendChild(table);
     })
     .catch((error) => {
-      const racesRankedBySpeedDiv = document.getElementById("racesRankedBySpeed");
-      racesRankedBySpeedDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+      const errorMessage = "An error occurred while processing the request.";
+      showModal(errorMessage);
+      console.error(error);
     });
 }
 
@@ -320,7 +350,12 @@ function capitalizeRiderName(riderName) {
 function toggleExample(codeBlock) {
   codeBlock.classList.toggle("hidden");
 }
-
+function deleteCard(divId) {
+  const div = document.getElementById(divId);
+  while (div.firstChild) {
+    div.removeChild(div.firstChild);
+  }
+}
 // Add click event listeners to all dropdown buttons
 function toggleElementVisibility(elementId) {
   var element = document.getElementById(elementId);
@@ -329,4 +364,44 @@ function toggleElementVisibility(elementId) {
   } else {
     element.style.display = "none";
   }
+}
+//error handling modal
+function showModal(message) {
+  // Create the modal overlay
+  const modalOverlay = document.createElement("div");
+  modalOverlay.classList.add("modal-overlay");
+
+  // Create the modal
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  // Create the message element
+  const messageElement = document.createElement("p");
+  messageElement.classList.add("modal-message");
+  messageElement.innerText = message;
+
+  // Create the close button
+  const closeButton = document.createElement("button");
+  closeButton.innerText = "X";
+  closeButton.classList.add("modal-close");
+
+  // Add the message and close button to the modal
+  modal.appendChild(closeButton);
+  modal.appendChild(messageElement);
+
+  // Add the modal to the page
+  document.body.appendChild(modalOverlay);
+  document.body.appendChild(modal);
+
+  // Add an event listener to the close button to remove the modal
+  closeButton.addEventListener("click", function() {
+    modalOverlay.remove();
+    modal.remove();
+  });
+
+  // Add an event listener to the modal overlay to remove the modal
+  modalOverlay.addEventListener("click", function() {
+    modalOverlay.remove();
+    modal.remove();
+  });
 }

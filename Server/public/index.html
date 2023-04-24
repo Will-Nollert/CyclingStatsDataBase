@@ -15,7 +15,8 @@
       The PCS Playground is the easiest way to familiarize yourself with the Scraped PCS API by submitting 
       HTTP requests and observing the responses before you write any client code. It will show what a response 
       will look like with different endpoints depending on the values selected. To check out the source code, 
-      click this GitHub link:  https://github.com/Will-Nollert/CyclingStatsDataBase. Pull requests 
+      click this  <a href="https://github.com/Will-Nollert/CyclingStatsDataBase" target="_blank">https://github.com/Will-Nollert/CyclingStatsDataBase
+      </a>. Pull requests 
       and suggestions are welcome! 
         <br/>
         <br/>
@@ -43,7 +44,7 @@
             Show Example
           </button>
           <pre class="hidden" id="example1">
-  fetch('/bicycle-racers/{name}')
+  fetch('/bicycle-racers/{name}/info')
         
   Example Response: {
           "riderName": "Wout Van Aert",
@@ -94,7 +95,7 @@
         Show Example
         </button>
         <pre class="hidden" id="example2">
-  fetch('/api/bicycle-racers/{name}/history')
+  fetch('/bicycle-racers/{name}/history')
         
   Example Response: [
         {
@@ -140,7 +141,7 @@
           Show Example
         </button>
         <pre class="hidden" id="example3">
-  fetch('/api/bicycle-racers/{name}/rankedHistory')
+  fetch('/bicycle-racers/{name}/rankedHistory')
         
   Example Response:  {
         "raceName": "paris-roubaix",
@@ -177,7 +178,6 @@
       </div>
     </div>
 
-  
 
     <div class="racer-dropdown">
       <button class="dropdown-btn" onclick="toggleElementVisibility('race-dropdown-content')">Individual Race Related Endpoints</button>
@@ -194,7 +194,7 @@
           </button>
           <br />
           <pre class="hidden" id="example4">
-        fetch('/api/races/:name/from/:startYear/to/:endYear')
+        fetch('/races/:name/from/:startYear/to/:endYear')
         
         Example Response: [
           {
@@ -250,6 +250,9 @@
         
     <form>
       <h3>Get One Race by Name, Year, and Stage</h3>
+      <div class="input-message">
+        Warning: This will return an error for non stage-races
+      </div>
       <hr />
       <button
         type="button"
@@ -259,7 +262,7 @@
         Show Example
       </button>
       <pre class="hidden" id="example5">
-  fetch('/api/races/{race_name}/{year_}{stage_}')
+  fetch('/races/{race_name}/{year_}{stage_}')
     
   Example Response: {
       "_id": "643973fbfdb78b8dbe432fe2",
@@ -297,7 +300,7 @@
         type="text"
         id="raceName2"
         name="raceName"
-        placeholder="Paris roubaix"
+        placeholder="Tour De France"
       />
       <label for="raceYear">Year:</label>
       <select id="raceYear", name="raceYear">
@@ -423,7 +426,7 @@
         Show Example
       </button>
       <pre class="hidden" id="example6">
-fetch('/api/races')
+fetch('/races/paris-roubaix/from/2005/to/2007/rank-by/winner-speed/')
 
 Exaple Response: [
 
@@ -438,12 +441,12 @@ Exaple Response: [
     
 ]
       </pre>
-      <label for="name">Race Name:</label>
-      <input type="text" id="name" name="name" required><br><br>
+      <label for="name" >Race Name:</label>
+      <input type="text" id="name" name="name" required placeholder="Tour de France"><br><br>
       <label for="startYearFinSpeed">Start Year:</label>
-      <input type="number" id="startYearFinSpeed" name="startYear" required><br><br>
+      <input type="number" id="startYearFinSpeed" name="startYear" required placeholder="2000"><br><br>
       <label for="endYear">End Year:</label>
-      <input type="number" id="endYearFinSpeed" name="endYear" required><br><br>
+      <input type="number" id="endYearFinSpeed" name="endYear" required placeholder="2005"><br><br>
       <button type="button" onclick="racesRankedBySpeed()">
        Rank Races by Speed
       </button>
@@ -463,7 +466,7 @@ Exaple Response: [
       Show Example
     </button>
     <pre class="hidden" id="example7">
-fetch('/api/races/tour-de-france/from/2018/to/2018/rank-by/vert-meters')
+fetch('/races/tour-de-france/from/2018/to/2018/rank-by/vert-meters')
 
 Exaple Response: [
 
@@ -479,11 +482,11 @@ Exaple Response: [
 ]
     </pre>
       <label for="nameInput">Name:</label>
-      <input type="text" id="nameInput" name="name"><br><br>
+      <input type="text" id="nameInput" name="name" placeholder="Tour de France"><br><br>
       <label for="startYearInput">Start Year:</label>
-      <input type="text" id="startYearInput" name="startYear"><br><br>
+      <input type="text" id="startYearInput" name="startYear" placeholder="1976"><br><br>
       <label for="endYearInput">End Year:</label>
-      <input type="text" id="endYearInput" name="endYear"><br><br>
+      <input type="text" id="endYearInput" name="endYear" placeholder="2006"><br><br>
       <button type="button" onclick="rankRacesByVertMeters()">Rank Races by Vert Meters</button>
       <button type="button" onclick="deleteCard('racesRankedByVertMeters')">Delete Card</button>
       <button type="button" onclick="toggleElementVisibility('allBicycleRacesRankedByVertMeters')">Hide Data</button>
