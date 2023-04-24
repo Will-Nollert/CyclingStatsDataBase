@@ -3,15 +3,19 @@ const router = express.Router();
 const Race = require("../DataBase/Models/raceObject");
 const BicycleRacer = require("../DataBase/Models/bicycleRacer");
 
-//Get ALL BicycleRacers with RaceID and Position
-router.get("/", async (req, res) => {
+//Get Some BicycleRacers with RaceID and Position by count 
+router.get("/:count", async (req, res) => {
   try {
-    const bicycleRacers = await BicycleRacer.find();
+    const count = parseInt(req.params.count);
+    const bicycleRacers = await BicycleRacer.aggregate([
+      { $sample: { size: count } }
+    ]);
     res.json(bicycleRacers);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
 
 //Route to get a rider by name
 router.get("/:riderName", async (req, res) => {
