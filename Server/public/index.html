@@ -144,12 +144,12 @@
         
   Example Response:  {
         "raceName": "paris-roubaix",
-        "raceDate": "09_April_2023",
+        "raceYear": "09_April_2023",
         "position": "1"
         },
         {
         "raceName": "amstel-gold-race",
-        "raceDate": "21_April_2019",
+        "raceYear": "21_April_2019",
         "position": "1"
         }, 
         etc...
@@ -250,7 +250,7 @@
         
     <form>
       <hr />
-      <h3>Get One Race by Name and Year</h3>
+      <h3>Get One Race by Name, Year, and Stage</h3>
       <button
         type="button"
         class="example-button"
@@ -259,7 +259,7 @@
         Show Example
       </button>
       <pre class="hidden" id="example5">
-  fetch('/api/races/{race_name}/{year_}')
+  fetch('/api/races/{race_name}/{year_}{stage_}')
     
   Example Response: {
       "_id": "643973fbfdb78b8dbe432fe2",
@@ -299,8 +299,8 @@
         name="raceName"
         placeholder="Paris roubaix"
       />
-      <label for="raceDate">Year:</label>
-      <select id="raceDate", name="raceDate">
+      <label for="raceYear">Year:</label>
+      <select id="raceYear", name="raceYear">
         <option value="">-- Select year --</option>
         <option value="2022">2022</option>
         <option value="2021">2021</option>
@@ -377,20 +377,43 @@
         <option value="1950">1950</option>
         <option value="1950">1950</option>
       </select>
-      <br />
+      <label for="raceStage">Stage:</label>
+      <select id="raceStage" name="raceStage">
+      <option value="">-- Select Stage --</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+      <option value="21">21</option>
+      <option value="22">22</option>
+      </select>
       <span>
+        <br>
         <button type="button" onclick="deleteCard('racesContainer')">Delete Card</button>
-        <button type="button" onclick="getRaceByNameAndYear()">Get Race</button>
+        <button type="button" onclick="getRaceByNameYearAndStage()">Get Race</button>
         <button type="button" onclick="toggleElementVisibility('racesContainer')">Hide Data</button>
         <div id="racesContainer"></div>
       </span>
     </form>
     
-    <form>
-      <h3>Get All Bicycle Races</h3>
-      <div class="input-message">
-        Warning: This will return a large amount of data
-      </div>
+    <form id="rankForm">
+      <h3>Rank instance of a race by finisher speed from start year to end year</h3>
       <hr />
       <button
         type="button"
@@ -416,12 +439,18 @@ Exaple Response: [
 ]
       </pre>
 <span>
-      <button type="button" onclick="getAllBicycleRaces()">
-        Get All Bicycle Races
+  <label for="name">Race Name:</label>
+  <input type="text" id="name" name="name" required><br><br>
+  <label for="startYearFinSpeed">Start Year:</label>
+  <input type="number" id="startYearFinSpeed" name="startYear" required><br><br>
+  <label for="endYear">End Year:</label>
+  <input type="number" id="endYearFinSpeed" name="endYear" required><br><br>
+      <button type="button" onclick="racesRankedBySpeed()">
+       Rank Races by Speed
       </button>
-      <button type="button" onclick="deleteCard('allBicycleRacers')">Delete Card</button>
-      <button type="button" onclick="toggleElementVisibility('allBicycleRacers')">Hide Data</button>
-      <div id="allBicycleRacers"></div>
+      <button type="button" onclick="deleteCard('racesRankedBySpeed')">Delete Card</button>
+      <button type="button" onclick="toggleElementVisibility('allBicracesRankedBySpeedycleRacers')">Hide Data</button>
+      <div id="racesRankedBySpeed"></div>
 </span>
     </form>
   </div>

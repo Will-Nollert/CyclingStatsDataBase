@@ -185,19 +185,18 @@ function getRankedBicycleRacerRaceHistory() {
     });
 }
 
-function getRaceByNameAndYear() {
-  let raceName = document.getElementById("raceName2").value;
-  raceName = raceName.toLowerCase().replace(/\s+/g, "-");
-  let year = document.getElementById("raceDate").value;
-  fetch(`${raceRouteURLBase}/${raceName}/${year}`)
+function getRaceByNameYearAndStage() {
+  const raceName = document.getElementById("raceName2").value;
+  const year = document.getElementById("raceYear").value;
+  const stage = document.getElementById("raceStage").value;
+  fetch(`${raceRouteURLBase}/${raceName}/${year}/${stage}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
 
       const raceCard = document.createElement("div");
       raceCard.classList.add("card");
       raceCard.innerHTML = `
-        <h2>${data.name} - ${data.date_}</h2>
+        <h2>${data.name} - ${data.date_} - Stage ${data.stage_}</h2>
         <p>Won How: ${data.won_how_}</p>
         <p>Distance: ${data.distance_} miles</p>
         <p>Finishers:</p>
@@ -216,11 +215,60 @@ function getRaceByNameAndYear() {
     .catch((error) => console.log(error));
 }
 
+
 function deleteCard(divId) {
   const div = document.getElementById(divId);
   while (div.firstChild) {
     div.removeChild(div.firstChild);
   }
+}
+
+function racesRankedBySpeed() {
+  const name = document.getElementById("raceName").value.toLowerCase().replace(/\s+/g, "-");
+  const startYear = document.getElementById("startYearFinSpeed").value;
+  const endYear = document.getElementById("endYearFinSpeed").value;
+  fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/winner-speed`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
+    .then((races) => {
+      console.log(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/winner-speed`)
+      const racesRankedBySpeedDiv = document.getElementById("racesRankedBySpeed");
+      racesRankedBySpeedDiv.innerHTML = `<h3>Races Ranked by Winner Speed (${startYear} - ${endYear})</h3>`;
+      if (races.length === 0) {
+        racesRankedBySpeedDiv.innerHTML += "<p>No races found for this name and time period</p>";
+        return;
+      }
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Winner Avg Speed</th>
+          </tr>
+        </thead>
+      `;
+      const tbody = document.createElement("tbody");
+      races.forEach((race) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${race.name}</td>
+          <td>${race.date_}</td>
+          <td>${race.avg_speed_winner_}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+      racesRankedBySpeedDiv.appendChild(table);
+    })
+    .catch((error) => {
+      const racesRankedBySpeedDiv = document.getElementById("racesRankedBySpeed");
+      racesRankedBySpeedDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+    });
 }
 
 
