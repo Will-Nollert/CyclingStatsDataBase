@@ -10,7 +10,7 @@ Playground URL: https://cycling-databse.herokuapp.com/
 <br>
  base url: https://cycling-databse.herokuapp.com/api
 <br>
- example request:  https://cycling-databse.herokuapp.com/api/races/wout-van-aert/info
+ example request:  https://cycling-databse.herokuapp.com/api/bicycle-racers/wout-van-aert/info
 <br>
 
 | HTTP Method | URL                                                                         | description                                                            |
