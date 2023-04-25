@@ -5,7 +5,15 @@ The main focus of this project is a Node.js and Express-based API that queries  
 
 live URL: https://cycling-databse.herokuapp.com/
 
-This URL will take you to a simple API playground where you can see example routes for the API, and what the expected response objects are. 
+## Example Routes 
+| HTTP Method | URL                                                                         | description                                                            |
+| ----------- |:---------------------------------------------------------------------------:| ----------------------------------------------------------------------:|
+| Get         | /races/{raceName}/{startYear]/{endYear}                                     | Get EVERY race with a specified name, within a time frame              |
+| Get         | /races/{raceName}{year}                                                     | Get ONE race by name and year                                          |
+| Get         | /races/{Race_ID}/finishers                                                  | Get ALL finishers for a specific race by Race_ID                       |
+| Get         | /races/{raceName}/from/{startYear}/to/{endYear}/ranked-by/startlist-quality | Rank all races by start-list quality score from start year to end year |
+| Get         | /bicycle-racers/{riderName}/info                                            | get all info for ONE rider by name                                     |
+| Get         | bicycle-racers/{riderName}/rankedHistory                                    | Rank ONE riders history by position                                    |
 
 ## Demo 
 
