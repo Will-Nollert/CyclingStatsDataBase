@@ -8,7 +8,10 @@ live URL: https://cycling-databse.herokuapp.com/
 This URL will take you to a simple API playground where you can see example routes for the API, and what the expected response objects are. 
 
 ## Demo 
-![API playground](https://user-images.githubusercontent.com/90637390/232357675-368d0f67-00bc-4e09-9ef4-32e8a08b3606.jpg)
+![Screenshot 2023-04-24 204927](https://user-images.githubusercontent.com/90637390/234154958-5a1d0d19-ab41-416c-923b-9705eec7350d.jpg)
+<hr>
+![Screenshot 2023-04-24 205029](https://user-images.githubusercontent.com/90637390/234155014-64da618c-3325-44b3-be92-fb227ac0beb9.jpg)
+
 
 
 ## Tech Stack
