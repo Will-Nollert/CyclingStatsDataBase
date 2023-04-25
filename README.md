@@ -8,9 +8,9 @@ Playground URL: https://cycling-databse.herokuapp.com/
 ## Example Routes 
  Ammend this URL with one of the endpoint below to demo the API
 <br>
- base url: https://cycling-databse.herokuapp.com/api
+ Base URL: https://cycling-databse.herokuapp.com/api
 <br>
- example request:  https://cycling-databse.herokuapp.com/api/bicycle-racers/wout-van-aert/info
+ Example Request:  https://cycling-databse.herokuapp.com/api/bicycle-racers/wout-van-aert/info
 <br>
 
 | HTTP Method | URL                                                                         | description                                                            |
