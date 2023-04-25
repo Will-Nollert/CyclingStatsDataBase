@@ -6,7 +6,10 @@ The main focus of this project is a Node.js and Express-based API that queries  
 Playground URL: https://cycling-databse.herokuapp.com/
 
 ## Example Routes 
+ Ammend this URL with one of the endpoint below to demo the API
  base url: https://cycling-databse.herokuapp.com/api
+ example request:  https://cycling-databse.herokuapp.com/api/races/wout-van-aert/info
+
 | HTTP Method | URL                                                                         | description                                                            |
 | ----------- |:---------------------------------------------------------------------------:| ----------------------------------------------------------------------:|
 | Get         | /races/{raceName}/{startYear]/{endYear}                                     | Get EVERY race with a specified name, within a time frame              |
