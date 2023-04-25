@@ -3,12 +3,22 @@
  *************************/
 const express = require("express");
 const cors = require("cors");
+const rateLimit = require('express-rate-limit');
 const app = express();
 const connectDB = require("./DataBase/db");
 require("dotenv").config();
 app.use(cors());
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
+
+/* RATE LIMITING MIDDLEWEAR  */
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
+  max: 1000, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later"
+});
+app.use(limiter);
+
 /********************
  * MONGOOSE CONNECT *
  * ******************/
