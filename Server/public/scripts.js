@@ -239,7 +239,6 @@ function getRaceByNameYearAndStage() {
     .catch((error) => console.log(error));
     const errorMessage = "An error occurred while processing the request.";
     showModal(errorMessage);
-    console.error(error);
 }
 
 async function rankRacesByVertMeters() {
@@ -247,6 +246,7 @@ async function rankRacesByVertMeters() {
     const name = document.getElementById("nameInput").value.toLowerCase().replace(/\s+/g, "-");
     const startYear = document.getElementById("startYearInput").value;
     const endYear = document.getElementById("endYearInput").value;
+
 
     const response = await fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/vert-meters`);
     const races = await response.json();
@@ -279,7 +279,7 @@ async function rankRacesByVertMeters() {
 
 
 function racesRankedBySpeed() {
-  const name = document.getElementById("raceName").value.toLowerCase().replace(/\s+/g, "-");
+  const name = document.getElementById("raceName7").value.toLowerCase().replace(/\s+/g, "-");
   const startYear = document.getElementById("startYearFinSpeed").value;
   const endYear = document.getElementById("endYearFinSpeed").value;
   fetch(`${raceRouteURLBase}/${name}/from/${startYear}/to/${endYear}/rank-by/winner-speed`)
