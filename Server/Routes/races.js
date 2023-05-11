@@ -172,6 +172,20 @@ router.get("/:name/:year_/:stage_", async (req, res) => {
   }
 });
 
+// Get a whole race object by race ID
+router.get("/race/:id", async (req, res) => {
+  try {
+    const race = await Race.findById(req.params.id).populate("finishers");
+    if (!race) {
+      return res.status(404).send("Race not found");
+    }
+    res.json(race);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
 // Get EVERY race with a specified name BAD ROUTE TOO SLOW
 //NEEDS ATTENTION
 router.get("/:name", protectRoute, async (req, res) => {
